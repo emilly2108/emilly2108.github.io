@@ -1,10 +1,198 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
-    <title>로봇 SW 블로그</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emilly2108 | Robot SW Portfolio</title>
+    
+    <!-- 1. Google Fonts에서 현대적인 산세리프 폰트 로드 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* 2. CSS 스타일 (여기서 디자인을 정의합니다) */
+        
+        :root {
+            --bg-color: #0c112b; /* 심해색 배경 */
+            --primary-color: #007bff; /* 메인 파란색 */
+            --accent-color: #00d4ff; /* 밝은 청록색 (그라데이션용) */
+            --text-color-primary: #ffffff; /* 흰색 텍스트 */
+            --text-color-secondary: #333333; /* 짙은 텍스트 */
+            --card-bg-color: rgba(255, 255, 255, 0.95); /* 카드 배경 (약간 투명) */
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            background-image: linear-gradient(135deg, #0c112b 0%, #172a5a 100%), url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj48ZyBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiM5QzlBQzkiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwaDIwdjIwSDIWMjB6TTAgMjBoMjB2MjBIMFYyMHoyMCAwaDIwdjIwSDIwVjB6Ii8+PC9nPjwvZz48L3N2Zz4='); /* 은은한 회로 기판 패턴 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color-primary);
+        }
+
+        /* 중앙 카드 컨테이너 */
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--card-bg-color);
+            padding: 50px 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            color: var(--text-color-secondary);
+            animation: slideUp 0.8s ease-out; /* 카드가 떠오르는 애니메이션 */
+            backdrop-filter: blur(5px); /* 배경 흐림 효과 (선택사항) */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 카드 상단에 은은한 빛 효과 추가 */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+
+        /* 헤더 스타일 (로봇 아이콘과 그라데이션 제목) */
+        header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #eeeeee;
+            padding-bottom: 20px;
+        }
+
+        .robot-icon {
+            font-size: 3rem;
+            margin-right: 20px;
+            animation: bounce 2s infinite ease-in-out; /* 로봇 튀는 애니메이션 */
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.4); /* 은은한 빛 */
+        }
+
+        /* 소개 텍스트 스타일 */
+        .intro {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .intro em {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* 포트폴리오 섹션 스타일 */
+        .portfolio-section {
+            background-color: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--text-color-secondary);
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        li::before {
+            content: '⚙️'; /* 리스트 아이콘 */
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px) scale(1.03); /* 호버 시 떠오름 */
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        /* 애니메이션 키프레임 정의 */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* 모바일 대응 (반응형) */
+        @media (max-width: 600px) {
+            .container { padding: 30px 20px; }
+            header { flex-direction: column; text-align: center; }
+            .robot-icon { margin-right: 0; margin-bottom: 15px; font-size: 2.5rem; }
+            h1 { font-size: 1.8rem; }
+            .intro { font-size: 1rem; }
+        }
+    </style>
 </head>
 <body>
-    <h1>안녕하세요! emilly2108의 로봇 소프트웨어 블로그입니다.</h1>
-    <p>테스트 중입니다.</p>
+    <div class="container">
+        <header>
+            <div class="robot-icon">🤖</div>
+            <h1>emilly2108 / Robot SW</h1>
+        </header>
+
+        <section class="intro">
+            <p>안녕하세요! 👋 로봇 소프트웨어 및 제어 시스템 개발을 꿈꾸는 <em>emilly2108</em>의 기술 포트폴리오 페이지입니다.</p>
+            <p>이곳은 단순한 HTML 페이지를 넘어, 제가 만든 다양한 로봇 시스템과 코드를 정리해두는 공간으로 채워나갈 예정입니다.</p>
+        </section>
+
+        <section class="portfolio-section">
+            <h2>준비 중인 포트폴리오</h2>
+            <ul>
+                <li>[ROS2] 자율 주행 로봇 시뮬레이션</li>
+                <li>[C++] 로봇 팔 역기하학 제어 알고리즘 구현</li>
+                <li>[Python] 비전 기반 물체 인식 및 분류 시스템</li>
+            </ul>
+        </section>
+        
+        <p style="text-align: center; margin-top: 40px; color: rgba(255,255,255,0.3); font-size: 0.9rem;">
+            © 2026 emilly2108. All rights reserved.
+        </p>
+    </div>
 </body>
 </html>
