@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Tech Blog</title>
-    <!-- 구글 폰트 및 아이콘 -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -98,6 +97,14 @@
 
         /* 글 카드 디자인 */
         .post-list { display: flex; flex-direction: column; gap: 20px; }
+        
+        /* [중요] 카드 링크 스타일: 테두리 및 밑줄 초기화 */
+        .post-card-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
         .post-card {
             background: white;
             border-radius: 12px;
@@ -109,7 +116,7 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .post-card:hover {
+        .post-card-link:hover .post-card {
             transform: translateY(-3px);
             box-shadow: 0 12px 20px rgba(0,0,0,0.05);
         }
@@ -135,39 +142,7 @@
         .post-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 8px 0; color: #1e293b; }
         .post-desc { color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5; }
 
-        /* 4. 글 내용 보기 모달 팝업 */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 1000;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-        .modal-content {
-            background: white;
-            width: 90%; max-width: 700px;
-            max-height: 80vh;
-            border-radius: 16px;
-            padding: 35px;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            overflow-y: auto; /* 모달 내부 내용 많을 때 스크롤 */
-            transform: translateY(20px);
-            transition: transform 0.3s ease;
-        }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-        .modal-close {
-            position: absolute; top: 20px; right: 25px;
-            font-size: 1.5rem; border: none; background: none; cursor: pointer; color: var(--text-muted);
-        }
-        .modal-body h2 { font-size: 1.6rem; margin-top: 10px; margin-bottom: 15px; }
-        .modal-body .meta-line { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; }
-        .modal-body .content-text { line-height: 1.8; color: #334155; font-size: 1.05rem; }
-
-        /* 5. 푸터 */
+        /* 4. 푸터 */
         footer {
             background-color: var(--bg-navbar);
             color: #94a3b8;
@@ -191,7 +166,6 @@
 </head>
 <body>
 
-    <!-- 네비게이션 바 -->
     <nav class="navbar">
         <div class="nav-logo">&lt;/&gt; <span>My Tech Blog</span></div>
         <ul class="nav-menu">
@@ -207,7 +181,6 @@
         </div>
     </nav>
 
-    <!-- 히어로 섹션 -->
     <section class="hero-section">
         <div class="hero-text">
             <div class="sub">안녕하세요!</div>
@@ -220,87 +193,71 @@
         </div>
     </section>
 
-    <!-- 글 목록 섹션 -->
     <main class="content-container">
         <div class="section-title">
             <h2>| 최근 글</h2>
             <a href="#" class="view-all">모든 글 보기 &rarr;</a>
         </div>
 
-        <!-- 스크롤이 정상 작동할 수 있도록 여러 개의 글 배치 -->
         <div class="post-list">
-            <!-- 카드 1 -->
-            <div class="post-card" onclick="openModal('ROS2 란 무엇인가? 기본 개념 정리', 'ROS2', '2026.05.24', 'ROS 2의 아키텍처, 통신 방식, 그리고 기존 ROS 1과의 차이점에 대해 정리합니다. <br><br> 로봇 공학에서 미들웨어의 역할은 매우 중요합니다. ROS2는 DDS(Data Distribution Service)를 도입하여 실시간성(Real-time)을 보장하고, 보안 요소를 강화했습니다. 앞으로 이 블로그를 통해 다양한 로봇 시뮬레이션 패키지를 다뤄보겠습니다.')">
-                <div class="post-img-box">⁙ ROS 2</div>
-                <div class="post-info">
-                    <div class="post-meta">
-                        <span class="post-tag">ROS2</span>
-                        <span class="post-date"><i class="far fa-calendar"></i> 2026.05.24</span>
+            <a href="ros2.html" class="post-card-link">
+                <div class="post-card">
+                    <div class="post-img-box">⁙ ROS 2</div>
+                    <div class="post-info">
+                        <div class="post-meta">
+                            <span class="post-tag">ROS2</span>
+                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.24</span>
+                        </div>
+                        <h3 class="post-title">ROS 2란 무엇인가? 기본 개념 정리</h3>
+                        <p class="post-desc">ROS 2의 아키텍처, 통신 방식, 그리고 기존 ROS 1과의 차이점에 대해 정리합니다.</p>
                     </div>
-                    <h3 class="post-title">ROS 2란 무엇인가? 기본 개념 정리</h3>
-                    <p class="post-desc">ROS 2의 아키텍처, 통신 방식, 그리고 기존 ROS 1과의 차이점에 대해 정리합니다.</p>
                 </div>
-            </div>
+            </a>
 
-            <!-- 카드 2 -->
-            <div class="post-card" onclick="openModal('YOLOv8 논문 리뷰 및 실험 결과', 'AI', '2026.05.20', 'YOLOv8 논문의 핵심 내용을 요약하고, 직접 실험한 결과를 정리합니다. <br><br>로봇의 눈이 되어주는 객체 인식(Object Detection) 부문에서 YOLO 기술은 필수적입니다. 본문에서는 커스텀 데이터셋을 활용해 주행 로봇 시점에서 장애물을 얼마나 빠르고 정확하게 검출해내는지 FPS와 mAP 지표를 분석합니다.')">
-                <div class="post-img-box">YOLO</div>
-                <div class="post-info">
-                    <div class="post-meta">
-                        <span class="post-tag">AI</span>
-                        <span class="post-date"><i class="far fa-calendar"></i> 2026.05.20</span>
+            <a href="yolo.html" class="post-card-link">
+                <div class="post-card">
+                    <div class="post-img-box">YOLO</div>
+                    <div class="post-info">
+                        <div class="post-meta">
+                            <span class="post-tag">AI</span>
+                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.20</span>
+                        </div>
+                        <h3 class="post-title">YOLOv8 논문 리뷰 및 실험 결과</h3>
+                        <p class="post-desc">YOLOv8 논문의 핵심 내용을 요약하고, 직접 실험한 결과를 정리합니다.</p>
                     </div>
-                    <h3 class="post-title">YOLOv8 논문 리뷰 및 실험 결과</h3>
-                    <p class="post-desc">YOLOv8 논문의 핵심 내용을 요약하고, 직접 실험한 결과를 정리합니다.</p>
                 </div>
-            </div>
+            </a>
 
-            <!-- 카드 3 -->
-            <div class="post-card" onclick="openModal('C언어 포인터 완벽 이해하기', 'C언어', '2026.05.18', '포인터의 개념부터 활용 예제까지, 헷갈렸던 부분을 한 번에 정리합니다. <br><br>로봇 제어 하드웨어(MCU)나 임베디드 저수준 제어를 할 때 임베디드 C/C++ 역량은 핵심입니다. 메모리에 직접 접근하는 포인터 구조와 배열, 함수 포인터 활용법을 알아봅니다.')">
-                <div class="post-img-box">&lt;#include&gt;</div>
-                <div class="post-info">
-                    <div class="post-meta">
-                        <span class="post-tag">C언어</span>
-                        <span class="post-date"><i class="far fa-calendar"></i> 2026.05.18</span>
+            <a href="pointer.html" class="post-card-link">
+                <div class="post-card">
+                    <div class="post-img-box">&lt;#include&gt;</div>
+                    <div class="post-info">
+                        <div class="post-meta">
+                            <span class="post-tag">C언어</span>
+                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.18</span>
+                        </div>
+                        <h3 class="post-title">C언어 포인터 완벽 이해하기</h3>
+                        <p class="post-desc">포인터의 개념부터 활용 예제까지, 헷갈렸던 부분을 한 번에 정리합니다.</p>
                     </div>
-                    <h3 class="post-title">C언어 포인터 완벽 이해하기</h3>
-                    <p class="post-desc">포인터의 개념부터 활용 예제까지, 헷갈렸던 부분을 한 번에 정리합니다.</p>
                 </div>
-            </div>
+            </a>
 
-            <!-- 카드 4 -->
-            <div class="post-card" onclick="openModal('Unity로 3D 게임 개발 시작하기', 'Unity', '2026.05.15', 'Unity 설치부터 간단한 3D 게임을 만들며 기본 기능을 익혀봅니다. <br><br>최근에는 Unity나 Unreal 엔진을 활용해 디지털 트윈(Digital Twin) 및 가상 로봇 시뮬레이션 환경을 구축하는 사례가 대단히 늘고 있습니다. 가상 센서 연동의 첫 걸음을 뗍니다.')">
-                <div class="post-img-box">unity</div>
-                <div class="post-info">
-                    <div class="post-meta">
-                        <span class="post-tag">Unity</span>
-                        <span class="post-date"><i class="far fa-calendar"></i> 2026.05.15</span>
+            <a href="unity.html" class="post-card-link">
+                <div class="post-card">
+                    <div class="post-img-box">unity</div>
+                    <div class="post-info">
+                        <div class="post-meta">
+                            <span class="post-tag">Unity</span>
+                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.15</span>
+                        </div>
+                        <h3 class="post-title">Unity로 3D 게임 개발 시작하기</h3>
+                        <p class="post-desc">Unity 설치부터 간단한 3D 게임을 만들며 기본 기능을 익혀봅니다.</p>
                     </div>
-                    <h3 class="post-title">Unity로 3D 게임 개발 시작하기</h3>
-                    <p class="post-desc">Unity 설치부터 간단한 3D 게임을 만들며 기본 기능을 익혀봅니다.</p>
                 </div>
-            </div>
+            </a>
         </div>
     </main>
 
-    <!-- 글 상세 보기 모달 구조 -->
-    <div class="modal-overlay" id="postModal" onclick="closeModal(event)">
-        <div class="modal-content">
-            <button class="modal-close" onclick="document.getElementById('postModal').classList.remove('active')">&times;</button>
-            <div class="modal-body">
-                <span class="post-tag" id="modalTag">Tag</span>
-                <h2 id="modalTitle">글 제목</h2>
-                <div class="meta-line">
-                    <span class="post-date" id="modalDate">Date</span>
-                </div>
-                <div class="content-text" id="modalBodyText">
-                    상세 내용이 들어가는 자리입니다.
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 푸터 -->
     <footer>
         <div>© 2026 My Tech Blog. All rights reserved.</div>
         <div class="footer-icons">
@@ -310,26 +267,5 @@
         </div>
     </footer>
 
-    <!-- 자바스크립트 기능 제어 -->
-    <script>
-        // 모달창 열기 함수
-        function openModal(title, tag, date, content) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalTag').innerText = tag;
-            document.getElementById('modalDate').innerText = '작성일: ' + date;
-            document.getElementById('modalBodyText').innerHTML = content;
-            
-            document.getElementById('postModal').classList.add('active');
-            document.body.style.overflow = 'hidden'; // 뒷배경 스크롤 방지
-        }
-
-        // 모달창 닫기 함수 (바깥 어두운 영역 클릭 시)
-        function closeModal(event) {
-            if(event.target.classList.contains('modal-overlay')) {
-                document.getElementById('postModal').classList.remove('active');
-                document.body.style.overflow = 'auto'; // 뒷배경 스크롤 복구
-            }
-        }
-    </script>
 </body>
 </html>
