@@ -1,233 +1,102 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROS 2 란 무엇인가? 기본 개념 정리</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-main: #f8f9fa;
-            --bg-navbar: #0f172a;
-            --text-dark: #333333;
-            --text-muted: #6c757d;
-            --primary-blue: #2563eb;
-            --accent-blue: #3b82f6;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-main);
-            color: var(--text-dark);
-        }
-
-        /* 1. 상단 네비게이션 바 (메인 홈과 통일) */
-        .navbar {
-            background-color: var(--bg-navbar);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 10%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .navbar a { color: white; text-decoration: none; }
-        .nav-logo { font-weight: 700; font-size: 1.1rem; cursor: pointer; }
-        .nav-logo span { color: var(--accent-blue); }
-        .nav-menu { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
-        .nav-menu li { font-size: 0.95rem; cursor: pointer; color: #cbd5e1; }
-        .nav-menu li a { color: #cbd5e1; transition: 0.2s; }
-        .nav-menu li a:hover, .nav-menu li.active a { color: white; font-weight: 500; }
-
-        /* 2. 티스토리 감성 본문 컨테이너 */
-        .post-container {
-            max-width: 800px;
-            margin: 50px auto;
-            padding: 40px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            border: 1px solid #e2e8f0;
-        }
-
-        /* 글 제목 영역 */
-        .post-header {
-            margin-bottom: 40px;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 20px;
-        }
-        .post-category {
-            color: var(--primary-blue);
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-        .post-title {
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin: 0 0 15px 0;
-            line-height: 1.3;
-        }
-        .post-meta {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        /* 실제 글 내용 스타일 (티스토리 서식 느낌) */
-        .post-content {
-            line-height: 1.8;
-            font-size: 1.1rem;
-            color: #2d3748;
-        }
-        .post-content p {
-            margin-bottom: 25px;
-        }
-        .post-content h2 {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: #1a202c;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            border-left: 5px solid var(--primary-blue);
-            padding-left: 12px;
-        }
-        .post-content h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #2d3748;
-            margin-top: 35px;
-            margin-bottom: 15px;
-        }
-        
-        /* 인용구 스타일 */
-        .post-content blockquote {
-            border-left: 4px solid #cbd5e1;
-            padding-left: 20px;
-            color: #4a5568;
-            font-style: italic;
-            margin: 30px 0;
-            background-color: #f8fafc;
-            padding: 15px 20px;
-            border-radius: 0 8px 8px 0;
-        }
-
-        /* 코드 블럭 스타일 */
-        .post-content pre {
-            background-color: #1e293b;
-            color: #f8fafc;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.95rem;
-            margin: 30px 0;
-        }
-
-        /* 하단 목록 버튼 */
-        .btn-back {
-            display: inline-block;
-            margin-top: 40px;
-            padding: 10px 20px;
-            background-color: #f1f5f9;
-            color: #475569;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-        .btn-back:hover {
-            background-color: #e2e8f0;
-            color: #1e293b;
-        }
-
-        /* 3. 푸터 */
-        footer {
-            background-color: var(--bg-navbar);
-            color: #94a3b8;
-            padding: 30px 10%;
-            text-align: center;
-            font-size: 0.85rem;
-            margin-top: 100px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ROS 2의 역할과 ROS 1과의 차이, 노드·토픽·서비스를 중심으로 기본 통신 구조를 정리합니다.">
+  <title>ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
 
-    <nav class="navbar">
-        <div class="nav-logo"><a href="index.html">&lt;/&gt; <span>My Tech Blog</span></a></div>
-        <ul class="nav-menu">
-            <li class="active"><a href="index.html">Home</a></li>
-            <li>Study</li>
-            <li>Projects</li>
-            <li>About</li>
-            <li>Contact</li>
-        </ul>
-    </nav>
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">ROS2</span>
+      <h1 class="post-title">ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리</h1>
+      <div class="post-meta"><i class="far fa-calendar"></i> 2026-05-24</div>
+      <p class="post-summary">ROS 2의 역할과 ROS 1과의 차이, 노드·토픽·서비스를 중심으로 기본 통신 구조를 정리합니다.</p>
+    </header>
 
-    <div class="post-container">
-        <header class="post-header">
-            <span class="post-category">ROS2</span>
-            <h1 class="post-title">ROS 2란 무엇인가? 기본 개념 정리</h1>
-            <div class="post-meta">
-                <span><i class="far fa-calendar"></i> 2026.05.24</span>
-            </div>
-        </header>
+    <article class="post-content">
+      <p>로봇을 개발할 때는 모터 제어, 센서 데이터 수집, 인식, 경로 계획처럼 서로 다른 기능을 동시에 다뤄야 합니다. 이 모든 기능을 처음부터 하나의 프로그램으로 만드는 일은 복잡하고 유지보수도 어렵습니다.</p>
 
-        <article class="post-content">
-            <p>안녕하세요! 오늘은 로봇 공학의 핵심 미들웨어인 <strong>ROS 2(Robot Operating System 2)</strong>의 기본 개념과 핵심 아키텍처에 대해 정리해 보려고 합니다.</p>
-            
-            <p>로봇을 개발할 때 모터 제어, 센서 데이터 수집, 인지 및 주행 알고리즘을 처음부터 끝까지 혼자 만드는 것은 거의 불가능에 가깝습니다. ROS 2는 이러한 복잡한 기능을 서로 쉽게 연결해 주는 로봇용 미들웨어 시스템입니다.</p>
+      <p><strong>ROS 2(Robot Operating System 2)</strong>는 이런 기능을 독립적인 프로그램으로 나누고 서로 통신하게 만드는 로봇 소프트웨어 미들웨어입니다. 이름에 Operating System이 들어가지만 Windows나 Linux 같은 운영체제 자체는 아닙니다.</p>
 
-            <blockquote>
-                "ROS는 운영체제(OS)가 아니라, 로봇 소프트웨어 개발을 위한 오픈소스 '미들웨어' 프레임워크입니다."
-            </blockquote>
+      <blockquote>
+        ROS 2는 로봇 기능을 작은 구성 요소로 분리하고, 각 요소가 표준화된 방식으로 데이터를 주고받도록 돕는 개발 프레임워크입니다.
+      </blockquote>
 
-            <h2>1. ROS 1 vs ROS 2의 가장 큰 차이점</h2>
-            <p>기존 ROS 1은 단일 마스터 시스템 기반이었기 때문에 마스터가 죽으면 로봇 전체 통신이 마비되는 치명적인 약점이 있었습니다. 하지만 ROS 2는 이를 보완하기 위해 <strong>DDS(Data Distribution Service)</strong>를 표준 통신 기술로 도입했습니다.</p>
-            
-            <h3>핵심 변경 사항 요약:</h3>
-            <ul>
-                <li><strong>마스터 없는 구조:</strong> 데이터 분산 서비스(DDS) 덕분에 중앙 서버 없이 로봇 내 노드들이 서로를 자동으로 탐색합니다.</li>
-                <li><strong>실시간성 보장 (Real-time):</strong> 저수준 제어나 정밀한 하드웨어 동기화가 가능해졌습니다.</li>
-                <li><strong>멀티 로봇 지원:</strong> 여러 대의 로봇이 무선 네트워크 환경에서도 끊김 없이 데이터를 주고받을 수 있습니다.</li>
-            </ul>
+      <h2>ROS 1과 ROS 2의 핵심 차이</h2>
 
-            <h2>2. ROS 2의 기본 통신 방식 종류</h2>
-            <p>ROS 2 시스템은 수많은 '노드(Node)'들의 집합으로 이루어집니다. 이 노드들이 소통하는 방식은 크게 세 가지로 나뉩니다.</p>
-            
-            <h3>① 토픽 (Topic)</h3>
-            <p>연속적인 데이터를 비동기식으로 주고받을 때 사용합니다. 카메라 영상 스트리밍이나 라이다(LiDAR) 센서 데이터처럼 끊임없이 발행(Publish)하고 구독(Subscribe)하는 형태입니다.</p>
+      <p>ROS 1은 중앙의 ROS Master를 통해 노드가 서로를 찾는 구조를 사용합니다. 구조가 단순하다는 장점이 있지만, 중앙 구성 요소에 문제가 생기면 시스템 전체의 통신에 영향을 줄 수 있습니다.</p>
 
-            <h3>② 서비스 (Service)</h3>
-            <p>요청(Request)과 응답(Response) 구조를 가진 일회성 동기식 통신입니다. "로봇 현재 위치 알려줘!"라고 요청하면 "지금 X: 1.2, Y: 0.5 야"라고 대답해 주는 방식입니다.</p>
+      <p>ROS 2는 <strong>DDS(Data Distribution Service)</strong> 기반 통신을 도입했습니다. 각 노드가 네트워크에서 서로를 발견할 수 있어 중앙 Master 없이도 분산된 시스템을 구성할 수 있습니다.</p>
 
-            <h2>3. 간단한 명령어 예시</h2>
-            <p>터미널에서 현재 활성화된 로봇 노드들과 토픽 목록을 확인하는 가장 기초적인 명령어입니다.</p>
+      <ul>
+        <li><strong>분산 구조:</strong> 중앙 Master에 의존하지 않고 노드가 서로를 발견합니다.</li>
+        <li><strong>QoS 설정:</strong> 데이터의 신뢰성, 보관 방식, 전송 지연 요구 등을 상황에 맞게 조정할 수 있습니다.</li>
+        <li><strong>다양한 플랫폼:</strong> Linux뿐 아니라 Windows와 macOS 등도 고려합니다.</li>
+        <li><strong>실시간 시스템 지원:</strong> 예측 가능한 응답 시간이 중요한 로봇 제어 환경을 더 잘 지원하도록 설계됐습니다.</li>
+      </ul>
 
-            <pre># 활성화된 노드 목록 확인하기
-$ ros2 node list
+      <h2>ROS 2 시스템의 기본 단위: 노드</h2>
 
-# 현재 발행 중인 토픽 목록 확인하기
-$ ros2 topic list</pre>
+      <p>ROS 2 애플리케이션은 여러 개의 <strong>노드(Node)</strong>로 구성됩니다. 노드는 특정 역할을 담당하는 하나의 실행 단위입니다. 예를 들어 카메라 노드는 영상을 발행하고, 객체 인식 노드는 그 영상을 받아 처리할 수 있습니다.</p>
 
-            <p>앞으로 이 블로그를 통해 다양한 로봇 시뮬레이션 환경(Isaac Sim, Gazebo 등)과 커스텀 하드웨어를 연동하는 과정을 차근차근 기록해 나갈 예정이니 기대해 주세요!</p>
-        </article>
+      <p>기능을 노드 단위로 분리하면 각 부분을 독립적으로 개발하고 테스트하기 쉬워집니다. 한 노드를 다른 구현으로 교체하거나, 여러 컴퓨터에 나누어 실행하는 것도 가능합니다.</p>
 
-        <a href="index.html" class="btn-back">&larr; 전체 글 목록으로</a>
-    </div>
+      <h2>대표적인 통신 방식</h2>
 
-    <footer>
-        <div>© 2026 My Tech Blog. All rights reserved.</div>
-    </footer>
+      <h3>토픽(Topic)</h3>
 
+      <p>토픽은 연속적인 데이터를 비동기 방식으로 전달할 때 사용합니다. 데이터를 보내는 노드를 Publisher, 받는 노드를 Subscriber라고 합니다. 카메라 영상, LiDAR 스캔, 로봇 속도 명령처럼 계속 흐르는 데이터에 적합합니다.</p>
+
+      <h3>서비스(Service)</h3>
+
+      <p>서비스는 요청(Request)과 응답(Response)이 한 쌍인 통신 방식입니다. “현재 로봇의 상태를 알려줘”처럼 특정 시점에 결과 하나를 받고 싶을 때 사용합니다. 요청을 보낸 쪽은 응답이 돌아올 때까지 기다리는 형태로 사용할 수 있으므로, 지속적인 데이터 스트림에는 토픽이 더 적합합니다.</p>
+
+      <h3>액션(Action)</h3>
+
+      <p>액션은 시간이 오래 걸리는 작업을 시작하고, 진행 상황을 받으며, 필요하면 취소할 수 있는 통신 방식입니다. 로봇을 특정 위치로 이동시키는 작업처럼 완료까지 시간이 필요한 명령에 잘 맞습니다.</p>
+
+      <h2>기본 명령어로 구조 확인하기</h2>
+
+      <p>ROS 2 환경이 준비됐다면 다음 명령으로 현재 실행 중인 노드와 토픽을 확인할 수 있습니다.</p>
+
+      <pre><code class="language-bash"># 실행 중인 노드 목록
+ros2 node list
+
+# 현재 사용 중인 토픽 목록
+ros2 topic list
+
+# 특정 토픽의 데이터 확인
+ros2 topic echo /topic_name</code></pre>
+
+      <h2>정리</h2>
+
+      <p>ROS 2는 복잡한 로봇 시스템을 여러 노드로 나누고, 토픽·서비스·액션으로 연결하게 해 줍니다. DDS 기반의 분산 구조와 QoS 설정은 여러 장치가 협력하는 실제 로봇 환경에서 특히 중요합니다.</p>
+
+      <p>처음에는 노드와 토픽의 관계부터 익힌 뒤, 간단한 Publisher와 Subscriber를 직접 만들어 보는 것이 좋습니다. 그다음 서비스와 액션, QoS 설정으로 범위를 넓히면 ROS 2의 통신 구조를 한층 자연스럽게 이해할 수 있습니다.</p>
+    </article>
+
+    <a href="index.html" class="btn-back">&larr; 전체 글 목록으로</a>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
 </body>
 </html>

@@ -1,271 +1,103 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Tech Blog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        :root {
-            --bg-main: #f8f9fa;
-            --bg-navbar: #0f172a;
-            --text-dark: #333333;
-            --text-muted: #6c757d;
-            --primary-blue: #2563eb;
-            --accent-blue: #3b82f6;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-main);
-            color: var(--text-dark);
-            overflow-y: scroll; /* 세로 스크롤 활성화 */
-        }
-
-        /* 1. 상단 네비게이션 바 */
-        .navbar {
-            background-color: var(--bg-navbar);
-            color: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 10%;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-logo { font-weight: 700; font-size: 1.1rem; cursor: pointer; }
-        .nav-logo span { color: var(--accent-blue); }
-        .nav-menu { display: flex; gap: 30px; list-style: none; margin: 0; padding: 0; }
-        .nav-menu li { font-size: 0.95rem; cursor: pointer; color: #cbd5e1; transition: 0.2s; }
-        .nav-menu li:hover, .nav-menu li.active { color: white; font-weight: 500; }
-        .nav-icons { display: flex; gap: 20px; font-size: 1.1rem; color: #cbd5e1; }
-
-        /* 2. 히어로 섹션 (상단 배너) */
-        .hero-section {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-            color: white;
-            padding: 80px 10%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 40px;
-        }
-        .hero-text { max-width: 500px; }
-        .hero-text .sub { color: var(--accent-blue); font-weight: 700; font-size: 0.95rem; margin-bottom: 10px; }
-        .hero-text h1 { font-size: 2.2rem; font-weight: 700; margin: 0 0 20px 0; line-height: 1.4; }
-        .hero-text p { color: #94a3b8; font-size: 1rem; line-height: 1.6; margin-bottom: 30px; }
-        .hero-btn { background-color: var(--primary-blue); color: white; padding: 12px 24px; border: none; border-radius: 6px; font-weight: 500; cursor: pointer; transition: 0.3s; text-decoration: none; display: inline-block;}
-        .hero-btn:hover { background-color: #1d4ed8; }
-        
-        /* 로봇/노트북 일러스트 느낌의 그래픽 박스 */
-        .hero-graphic {
-            flex: 1;
-            max-width: 450px;
-            height: 280px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 5rem;
-            color: rgba(255,255,255,0.2);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        /* 3. 최근 글 리스트 섹션 */
-        .content-container {
-            padding: 50px 10%;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            border-left: 4px solid var(--primary-blue);
-            padding-left: 12px;
-        }
-        .section-title h2 { margin: 0; font-size: 1.3rem; font-weight: 700; }
-        .section-title .view-all { color: var(--text-muted); font-size: 0.85rem; text-decoration: none; }
-
-        /* 글 카드 디자인 */
-        .post-list { display: flex; flex-direction: column; gap: 20px; }
-        
-        /* [중요] 카드 링크 스타일: 테두리 및 밑줄 초기화 */
-        .post-card-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .post-card {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            display: flex;
-            gap: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-            border: 1px solid #e2e8f0;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .post-card-link:hover .post-card {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.05);
-        }
-        
-        /* 카드 내 왼쪽 모형 이미지 박스 */
-        .post-img-box {
-            width: 180px;
-            height: 110px;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-        .post-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
-        .post-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .post-tag { background: #eff6ff; color: var(--primary-blue); font-size: 0.75rem; font-weight: 700; padding: 3px 8px; border-radius: 4px; }
-        .post-date { color: var(--text-muted); font-size: 0.85rem; }
-        .post-title { font-size: 1.2rem; font-weight: 700; margin: 0 0 8px 0; color: #1e293b; }
-        .post-desc { color: var(--text-muted); font-size: 0.9rem; margin: 0; line-height: 1.5; }
-
-        /* 4. 푸터 */
-        footer {
-            background-color: var(--bg-navbar);
-            color: #94a3b8;
-            padding: 30px 10%;
-            text-align: center;
-            font-size: 0.85rem;
-            border-top: 1px solid #1e293b;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        footer .footer-icons { display: flex; gap: 15px; font-size: 1.1rem; }
-
-        /* 모바일 대응 */
-        @media (max-width: 768px) {
-            .hero-section { flex-direction: column; text-align: center; padding: 40px 5%; }
-            .hero-graphic { display: none; }
-            .post-card { flex-direction: column; gap: 15px; }
-            .post-img-box { width: 100%; height: 140px; }
-            .navbar, footer { padding: 15px 5%; }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="개발과 학습 내용을 기록하는 기술 블로그">
+  <title>My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
 
-    <nav class="navbar">
-        <div class="nav-logo">&lt;/&gt; <span>My Tech Blog</span></div>
-        <ul class="nav-menu">
-            <li class="active">Home</li>
-            <li>Study</li>
-            <li>Projects</li>
-            <li>About</li>
-            <li>Contact</li>
-        </ul>
-        <div class="nav-icons">
-            <i class="fab fa-github" style="cursor:pointer;"></i>
-            <i class="fas fa-sun" style="cursor:pointer;"></i>
-        </div>
-    </nav>
+  <header class="hero-section">
+    <div class="hero-text">
+      <div class="hero-kicker">안녕하세요 👋</div>
+      <h1>개발과 학습을<br>기록하는 공간</h1>
+      <p>새로운 기술을 배우고 프로젝트를 만들며 얻은 경험을, 다시 찾아보기 좋은 글로 정리합니다.</p>
+      <a class="hero-btn" href="#posts">최근 글 살펴보기</a>
+    </div>
+    <div class="hero-graphic" aria-hidden="true">
+      <i class="fas fa-laptop-code"></i>
+    </div>
+  </header>
 
-    <section class="hero-section">
-        <div class="hero-text">
-            <div class="sub">안녕하세요!</div>
-            <h1>개발과 학습을 기록하는 공간</h1>
-            <p>새로운 기술을 배우고, 프로젝트를 만들고, 그 과정에서 얻은 것들을 기록합니다.</p>
-            <button class="hero-btn">더 알아보기 &gt;</button>
-        </div>
-        <div class="hero-graphic">
-            <i class="fas fa-laptop-code"></i>
-        </div>
-    </section>
+  <main class="content-container" id="posts">
+    <div class="section-title">
+      <h2>최근 글</h2>
+      <span id="post-count" class="post-count"></span>
+    </div>
+    <div class="post-list" id="post-list" aria-live="polite">
+      <p class="loading-message">글 목록을 불러오는 중입니다.</p>
+    </div>
+  </main>
 
-    <main class="content-container">
-        <div class="section-title">
-            <h2>| 최근 글</h2>
-            <a href="#" class="view-all">모든 글 보기 &rarr;</a>
-        </div>
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
 
-        <div class="post-list">
-            <a href="ros2.html" class="post-card-link">
-                <div class="post-card">
-                    <div class="post-img-box">⁙ ROS 2</div>
-                    <div class="post-info">
-                        <div class="post-meta">
-                            <span class="post-tag">ROS2</span>
-                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.24</span>
-                        </div>
-                        <h3 class="post-title">ROS 2란 무엇인가? 기본 개념 정리</h3>
-                        <p class="post-desc">ROS 2의 아키텍처, 통신 방식, 그리고 기존 ROS 1과의 차이점에 대해 정리합니다.</p>
-                    </div>
+  <script>
+    const escapeHtml = (value) => {
+      const node = document.createElement("div");
+      node.textContent = String(value ?? "");
+      return node.innerHTML;
+    };
+
+    const formatDate = (value) => String(value ?? "").replaceAll("-", ".");
+
+    async function renderPosts() {
+      const list = document.getElementById("post-list");
+      const count = document.getElementById("post-count");
+
+      try {
+        const response = await fetch("posts.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const posts = await response.json();
+
+        count.textContent = `${posts.length}개의 글`;
+        if (!posts.length) {
+          list.innerHTML = '<p class="empty-message">아직 등록된 글이 없습니다.</p>';
+          return;
+        }
+
+        list.innerHTML = posts.map((post) => `
+          <a href="${escapeHtml(post.url)}" class="post-card-link">
+            <article class="post-card">
+              <div class="post-img-box">${escapeHtml(post.heroLabel)}</div>
+              <div class="post-info">
+                <div class="post-meta-row">
+                  <span class="post-tag">${escapeHtml(post.tag)}</span>
+                  <span class="post-date"><i class="far fa-calendar"></i> ${formatDate(post.date)}</span>
                 </div>
-            </a>
+                <h3 class="post-card-title">${escapeHtml(post.title)}</h3>
+                <p class="post-desc">${escapeHtml(post.summary)}</p>
+              </div>
+            </article>
+          </a>
+        `).join("");
+      } catch (error) {
+        list.innerHTML = `
+          <p class="error-message">
+            글 목록을 불러오지 못했습니다. 로컬에서는 <code>python -m http.server</code>로 확인해 주세요.
+          </p>
+        `;
+        console.error(error);
+      }
+    }
 
-            <a href="yolo.html" class="post-card-link">
-                <div class="post-card">
-                    <div class="post-img-box">YOLO</div>
-                    <div class="post-info">
-                        <div class="post-meta">
-                            <span class="post-tag">AI</span>
-                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.20</span>
-                        </div>
-                        <h3 class="post-title">YOLOv8 논문 리뷰 및 실험 결과</h3>
-                        <p class="post-desc">YOLOv8 논문의 핵심 내용을 요약하고, 직접 실험한 결과를 정리합니다.</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="pointer.html" class="post-card-link">
-                <div class="post-card">
-                    <div class="post-img-box">&lt;#include&gt;</div>
-                    <div class="post-info">
-                        <div class="post-meta">
-                            <span class="post-tag">C언어</span>
-                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.18</span>
-                        </div>
-                        <h3 class="post-title">C언어 포인터 완벽 이해하기</h3>
-                        <p class="post-desc">포인터의 개념부터 활용 예제까지, 헷갈렸던 부분을 한 번에 정리합니다.</p>
-                    </div>
-                </div>
-            </a>
-
-            <a href="unity.html" class="post-card-link">
-                <div class="post-card">
-                    <div class="post-img-box">unity</div>
-                    <div class="post-info">
-                        <div class="post-meta">
-                            <span class="post-tag">Unity</span>
-                            <span class="post-date"><i class="far fa-calendar"></i> 2026.05.15</span>
-                        </div>
-                        <h3 class="post-title">Unity로 3D 게임 개발 시작하기</h3>
-                        <p class="post-desc">Unity 설치부터 간단한 3D 게임을 만들며 기본 기능을 익혀봅니다.</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </main>
-
-    <footer>
-        <div>© 2026 My Tech Blog. All rights reserved.</div>
-        <div class="footer-icons">
-            <i class="fab fa-github"></i>
-            <i class="far fa-envelope"></i>
-            <i class="fas fa-arrow-up" onclick="window.scrollTo({top:0, behavior:'smooth'})" style="cursor:pointer;"></i>
-        </div>
-    </footer>
-
+    renderPosts();
+  </script>
 </body>
 </html>

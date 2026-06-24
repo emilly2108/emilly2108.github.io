@@ -1,0 +1,20 @@
+[
+  {
+    "slug": "vla-introduction",
+    "title": "VLA란 무엇인가? 비전·언어·행동을 연결하는 로봇 AI",
+    "tag": "Robot AI",
+    "heroLabel": "VLA",
+    "summary": "VLA 모델이 시각 정보와 자연어 명령을 이해해 로봇의 행동을 생성하는 원리, 학습 방식, 활용 분야와 한계를 정리합니다.",
+    "date": "2026-06-25",
+    "url": "vla-introduction.html"
+  },
+  {
+    "slug": "ros2",
+    "title": "ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리",
+    "tag": "ROS2",
+    "heroLabel": "ROS 2",
+    "summary": "ROS 2의 역할과 ROS 1과의 차이, 노드·토픽·서비스를 중심으로 기본 통신 구조를 정리합니다.",
+    "date": "2026-05-24",
+    "url": "ros2.html"
+  }
+]
