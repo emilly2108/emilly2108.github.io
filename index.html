@@ -24,20 +24,23 @@
       <div class="hero-kicker">안녕하세요 👋</div>
       <h1>개발과 학습을<br>기록하는 공간</h1>
       <p>새로운 기술을 배우고 프로젝트를 만들며 얻은 경험을, 다시 찾아보기 좋은 글로 정리합니다.</p>
-      <a class="hero-btn" href="#posts">최근 글 살펴보기</a>
+      <div class="hero-btn-group">
+        <a class="hero-btn" href="#content-section" onclick="renderPosts()">최근 글 살펴보기</a>
+        <a class="hero-btn code-btn" href="#content-section" onclick="renderCodes()">코드들 살펴보기</a>
+      </div>
     </div>
     <div class="hero-graphic" aria-hidden="true">
       <i class="fas fa-laptop-code"></i>
     </div>
   </header>
 
-  <main class="content-container" id="posts">
+  <main class="content-container" id="content-section">
     <div class="section-title">
-      <h2>최근 글</h2>
-      <span id="post-count" class="post-count"></span>
+      <h2 id="section-heading">최근 글</h2>
+      <span id="content-count" class="post-count"></span>
     </div>
-    <div class="post-list" id="post-list" aria-live="polite">
-      <p class="loading-message">글 목록을 불러오는 중입니다.</p>
+    <div class="post-list" id="content-list" aria-live="polite">
+      <p class="loading-message">목록을 불러오는 중입니다.</p>
     </div>
   </main>
 
@@ -57,32 +60,40 @@
 
     const formatDate = (value) => String(value ?? "").replaceAll("-", ".");
 
-    async function renderPosts() {
-      const list = document.getElementById("post-list");
-      const count = document.getElementById("post-count");
+    // 공통 렌더링 함수
+    async function fetchDataAndRender(url, isCode = false) {
+      const list = document.getElementById("content-list");
+      const count = document.getElementById("content-count");
+      const heading = document.getElementById("section-heading");
+
+      heading.textContent = isCode ? "코드 목록" : "최근 글";
+      list.innerHTML = '<p class="loading-message">목록을 불러오는 중입니다.</p>';
 
       try {
-        const response = await fetch("posts.json", { cache: "no-store" });
+        const response = await fetch(url, { cache: "no-store" });
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const posts = await response.json();
+        const items = await response.json();
 
-        count.textContent = `${posts.length}개의 글`;
-        if (!posts.length) {
-          list.innerHTML = '<p class="empty-message">아직 등록된 글이 없습니다.</p>';
+        count.textContent = `${items.length}개의 항목`;
+        if (!items.length) {
+          list.innerHTML = `<p class="empty-message">아직 등록된 ${isCode ? '코드' : '글'}가 없습니다.</p>`;
           return;
         }
 
-        list.innerHTML = posts.map((post) => `
-          <a href="${escapeHtml(post.url)}" class="post-card-link">
+        list.innerHTML = items.map((item) => `
+          <a href="${escapeHtml(item.url)}" class="post-card-link" target="${isCode ? '_blank' : '_self'}" rel="${isCode ? 'noopener noreferrer' : ''}">
             <article class="post-card">
-              <div class="post-img-box">${escapeHtml(post.heroLabel)}</div>
+              <div class="post-img-box">${escapeHtml(item.heroLabel ?? (isCode ? "💻" : "📝"))}</div>
               <div class="post-info">
                 <div class="post-meta-row">
-                  <span class="post-tag">${escapeHtml(post.tag)}</span>
-                  <span class="post-date"><i class="far fa-calendar"></i> ${formatDate(post.date)}</span>
+                  <span class="post-tag">${escapeHtml(item.tag)}</span>
+                  <span class="post-date">
+                    <i class="${isCode ? 'fab fa-github' : 'far fa-calendar'}"></i> 
+                    ${isCode ? 'GitHub' : formatDate(item.date)}
+                  </span>
                 </div>
-                <h3 class="post-card-title">${escapeHtml(post.title)}</h3>
-                <p class="post-desc">${escapeHtml(post.summary)}</p>
+                <h3 class="post-card-title">${escapeHtml(item.title)}</h3>
+                <p class="post-desc">${escapeHtml(item.summary)}</p>
               </div>
             </article>
           </a>
@@ -90,13 +101,24 @@
       } catch (error) {
         list.innerHTML = `
           <p class="error-message">
-            글 목록을 불러오지 못했습니다. 로컬에서는 <code>python -m http.server</code>로 확인해 주세요.
+            목록을 불러오지 못했습니다. 로컬에서는 <code>python -m http.server</code>로 확인해 주세요.
           </p>
         `;
         console.error(error);
       }
     }
 
+    // 최근 글 보기 함수
+    function renderPosts() {
+      fetchDataAndRender("posts.json", false);
+    }
+
+    // 코드들 보기 함수
+    function renderCodes() {
+      fetchDataAndRender("codes.json", true);
+    }
+
+    // 첫 페이지 로드 시에는 최근 글을 기본으로 보여줍니다.
     renderPosts();
   </script>
 </body>
