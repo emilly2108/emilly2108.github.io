@@ -2,6 +2,18 @@
 
 `txt`, `md`, `pdf`, `docx`, `hwp`, `hwpx` 등의 학습 자료를 읽어 한국어 기술 블로그 글로 편집하고, GitHub Pages 사이트의 글 목록과 상세 페이지를 자동으로 갱신합니다.
 
+## Codex 자동 게시 에이전트
+
+이 저장소를 Codex 작업공간으로 연 뒤 자료 파일을 첨부하고 다음처럼 요청합니다.
+
+```text
+$publish-tech-blog 이 파일을 기술 블로그 글로 만들어서 게시해줘.
+```
+
+자료가 완성된 글일 필요는 없습니다. 메모, 글머리표, 코드, 로그, 강의 기록, TXT, PDF, DOCX, HWP/HWPX와 이미지도 사용할 수 있습니다. 에이전트는 글 작성, 상세 HTML 생성, `posts.json` 갱신, 검증, `git add .`, 커밋, `git push origin main`을 순서대로 수행합니다.
+
+이 방식은 Codex가 직접 글을 작성하므로 OpenAI Platform API 키를 사용하지 않습니다. “초안만 만들어줘” 또는 “미리보기만 해줘”라고 요청하면 GitHub에는 push하지 않습니다.
+
 ## 동작 방식
 
 1. 입력 자료를 읽거나 OpenAI Files API에 임시 업로드합니다.

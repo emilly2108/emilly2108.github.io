@@ -9,6 +9,15 @@
     "url": "vla-introduction.html"
   },
   {
+    "slug": "ros2-autonomous-navigation-slam",
+    "title": "ROS 2 기반 자율주행과 SLAM: 지도 작성부터 경로 계획까지",
+    "tag": "ROS2",
+    "heroLabel": "ROS 2 SLAM",
+    "summary": "ROS 2 자율주행 시스템에서 SLAM이 센서 데이터로 지도와 위치를 추정하는 원리부터 2D·3D·Semantic SLAM, Nav2 연계와 현실적인 한계까지 정리합니다.",
+    "date": "2026-06-25",
+    "url": "ros2-autonomous-navigation-slam.html"
+  },
+  {
     "slug": "ros2",
     "title": "ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리",
     "tag": "ROS2",

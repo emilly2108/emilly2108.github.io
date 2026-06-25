@@ -1,0 +1,4 @@
+interface:
+  display_name: "기술 블로그 자동 게시"
+  short_description: "학습 자료를 글로 바꾸고 GitHub Pages에 게시"
+  default_prompt: "Use $publish-tech-blog to turn the attached study material into a Korean tech blog post and publish it."
