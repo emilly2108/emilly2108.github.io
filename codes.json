@@ -1,5 +1,12 @@
 [
   {
+    "title": "Berkeley Humanoid Lite Isaac Lab",
+    "summary": "Isaac Lab에서 휴머노이드 보행·도립진자 강화학습과 MuJoCo·실기 제어를 실험하는 로보틱스 프로젝트입니다.",
+    "tag": "Python / Robotics",
+    "heroLabel": "🤖",
+    "url": "https://github.com/emilly2108/berkeley-humanoid-isaaclab"
+  },
+  {
     "title": "pendulum",
     "summary": "RoboMaster S1과 Jetson Orin Nano를 활용한 도립진자 강화학습 알고리즘 제어 소스코드입니다.",
     "tag": "RL / Robotics",
