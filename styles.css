@@ -436,3 +436,20 @@ footer {
     padding: 24px 6%;
   }
 }
+/* 버튼 두 개를 나란히 배치하기 위한 그룹 스타일 */
+.hero-btn-group {
+  display: flex;
+  gap: 12px;
+  justify-content: center; /* hero-text 배치에 따라 center 또는 flex-start로 조정 */
+  margin-top: 20px;
+}
+
+/* 코드들 살펴보기 버튼의 색상을 다르게 하고 싶다면 사용하세요 */
+.hero-btn.code-btn {
+  background-color: #24292e; /* 깃허브 다크 그레이 색상 */
+  color: #fff;
+}
+
+.hero-btn.code-btn:hover {
+  background-color: #444c56;
+}
