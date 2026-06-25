@@ -2,6 +2,23 @@
 
 `txt`, `md`, `pdf`, `docx`, `hwp`, `hwpx` 등의 학습 자료를 읽어 한국어 기술 블로그 글로 편집하고, GitHub Pages 사이트의 글 목록과 상세 페이지를 자동으로 갱신합니다.
 
+## 코드 프로젝트 자동 게시
+
+Codex에서 코드 파일이나 폴더를 첨부한 뒤 다음 네 글자만 보냅니다.
+
+```text
+코드 작성
+```
+
+Codex가 코드를 분석해 프로젝트명과 설명을 만들고, README와 `.gitignore`를 정리한 뒤 `emilly2108` 계정에 새 공개 저장소를 생성합니다. 코드를 push한 다음 `codes.json` 맨 위에 pendulum과 같은 형식의 카드를 추가하고 이 웹사이트도 `origin/main`에 게시합니다.
+
+최초 한 번은 GitHub CLI 설치와 로그인이 필요합니다.
+
+```powershell
+winget install --id GitHub.cli
+gh auth login
+```
+
 ## Codex 자동 게시 에이전트
 
 이 저장소를 Codex 작업공간으로 연 뒤 자료 파일을 첨부하고 다음처럼 요청합니다.

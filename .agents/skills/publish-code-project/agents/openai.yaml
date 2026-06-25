@@ -1,0 +1,4 @@
+interface:
+  display_name: "코드 프로젝트 자동 게시"
+  short_description: "코드로 새 GitHub 저장소와 목록 항목 생성"
+  default_prompt: "코드 작성"
