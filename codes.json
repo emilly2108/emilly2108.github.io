@@ -1,16 +1,9 @@
 [
   {
-    "title": "Inverted Pendulum Control System",
-    "summary": "RoboMaster S1과 Jetson Orin Nano를 활용한 도립진동자 제어 알고리즘 소스코드입니다.",
-    "tag": "Robotics",
-    "heroLabel": "🤖",
-    "url": "https://github.com/emilly2108/inverted-pendulum"
-  },
-  {
-    "title": "Isaac Sim Reinforcement Learning Environment",
-    "summary": "Sim-to-Real 환경 구축을 위한 Isaac Lab 훈련 및 환경 설정 스크립트 모음입니다.",
-    "tag": "Simulation",
-    "heroLabel": "🚀",
-    "url": "https://github.com/emilly2108/isaac-sim-rl"
+    "title": "pendulum",
+    "summary": "RoboMaster S1과 Jetson Orin Nano를 활용한 도립진자 강화학습 알고리즘 제어 소스코드입니다.",
+    "tag": "RL / Robotics",
+    "heroLabel": "🕹️",
+    "url": "https://github.com/emilly2108/pendulum.git"
   }
 ]
