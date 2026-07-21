@@ -388,6 +388,20 @@ body {
   color: #0f172a;
 }
 
+.project-video {
+  margin-top: 52px;
+}
+
+.project-video video {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #0f172a;
+  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.12);
+}
+
 .post-actions {
   display: flex;
   flex-wrap: wrap;
