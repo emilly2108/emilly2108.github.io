@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="2025년에 친구와 약 1개월간 제작한 Unity 기반 공포게임 협업 작품 소개입니다.">
+  <meta name="description" content="Raycast 기반 상호작용, 상태값 기반 퍼즐 흐름, ScriptableObject 아이템 데이터, Coroutine 애니메이션으로 구현한 Unity 공포게임 협업 작품 소개입니다.">
   <title>유니티를 활용한 공포게임 협업 작품 | My Tech Blog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,7 +24,7 @@
       <span class="post-category">Unity / C#</span>
       <h1 class="post-title">유니티를 활용한 공포게임 협업 작품</h1>
       <div class="post-meta"><i class="fab fa-github"></i> 2025.07–2025.08</div>
-      <p class="post-summary">2025년에 약 1개월간 친구와 함께 제작한 첫 협업 작품입니다. 공포게임 안에서 플레이어가 퍼즐을 풀고, 사물과 상호작용하며, 애니메이션으로 상황 변화를 체감하도록 구현했습니다.</p>
+      <p class="post-summary">2025년에 약 1개월간 친구와 함께 제작한 첫 협업 작품입니다. Raycast 기반 상호작용, 상태값 기반 퍼즐 흐름, ScriptableObject 아이템 데이터, Coroutine/Lerp 애니메이션으로 플레이어가 퍼즐과 사물 변화를 자연스럽게 체감하도록 구현했습니다.</p>
     </header>
 
     <article class="post-content">
@@ -41,24 +41,29 @@
         </li>
         <li>
           <strong>주요 기술</strong>
-          Unity, C#, ShaderLab, HLSL
+          Unity, C#, Raycast, TextMeshPro UI, Coroutine, ScriptableObject, Prefab/Scene workflow
         </li>
       </ul>
 
-      <h2>내가 담당한 작업</h2>
+      <h2>구현 방식</h2>
 
       <ul>
-        <li>게임 안의 모든 퍼즐 로직 코딩</li>
-        <li>문, 오브젝트, 아이템 등 사물과의 객체 상호작용 코딩</li>
-        <li>사물 상태 변화에 맞춘 애니메이션 동작 코딩</li>
-        <li>플레이어 행동에 따라 퍼즐과 오브젝트가 자연스럽게 연결되도록 흐름 구현</li>
+        <li><code>Camera.main.ScreenPointToRay</code>와 <code>Physics.Raycast</code>를 사용해 화면 중앙 기준으로 상호작용 가능한 문, 서랍, 퍼즐, 아이템을 감지했습니다.</li>
+        <li>오브젝트 종류는 Tag와 SerializedField 참조로 구분하고, 플레이어가 Z/R 키를 누를 때 UI 표시, 이동 잠금, 퍼즐 창 열림/닫힘이 함께 동작하도록 연결했습니다.</li>
+        <li><code>Showing</code>, <code>Solve</code>, <code>opening</code> 같은 상태값을 분리해 퍼즐 진행 단계와 오브젝트 열림 상태를 간단한 FSM처럼 관리했습니다.</li>
+        <li>아이템은 <code>ScriptableObject</code> 기반 <code>Item</code> 데이터로 이름, 설명, 타입, 이미지, 프리팹을 분리하고, <code>Inventory</code>/<code>Slot</code> 구조로 획득 흐름을 구현했습니다.</li>
+        <li>문과 서랍 애니메이션은 <code>Coroutine</code>, <code>Quaternion.Lerp</code>, <code>Vector3.Lerp</code>를 사용해 시간 기반으로 부드럽게 열리고 닫히도록 만들었습니다.</li>
       </ul>
 
-      <h2>프로젝트에서 중요하게 본 점</h2>
+      <h2>기술 스택을 실제 기능에 연결한 부분</h2>
 
-      <p>공포게임은 분위기만큼이나 플레이어가 “무엇을 눌렀을 때 무엇이 변하는지”를 자연스럽게 이해하는 흐름이 중요합니다. 그래서 퍼즐의 조건, 사물과의 상호작용, 애니메이션 재생 타이밍이 끊기지 않도록 연결하는 데 집중했습니다.</p>
+      <p>핵심 구현은 C# 게임 로직입니다. TextMeshPro는 비밀번호·안내 문구 UI에 사용했고, ShaderLab/HLSL 파일은 주로 TextMeshPro와 에셋 렌더링 리소스로 포함되어 있어 담당 기능 설명에서는 “직접 작성한 셰이더”처럼 과장하지 않고 구분했습니다.</p>
 
-      <p>이 작업을 통해 Unity에서 상호작용 오브젝트를 설계하고, 게임 플레이 흐름에 맞춰 스크립트를 나누어 관리하는 경험을 쌓았습니다. 첫 협업 작품이라 기능 구현뿐 아니라 작업 분담과 결과물 통합 과정도 함께 배울 수 있었던 프로젝트입니다.</p>
+      <h2>협업과 버전 관리</h2>
+
+      <p>친구와 역할을 나누어 작업하면서 GitHub로 씬, 프리팹, 스크립트를 공유했습니다. Unity 프로젝트는 씬과 프리팹 충돌이 생기기 쉬워서, 내가 맡은 퍼즐·상호작용·애니메이션 스크립트 단위로 기능을 나누고 SerializedField로 필요한 오브젝트를 연결하는 방식으로 작업 범위를 분리했습니다.</p>
+
+      <p>첫 협업 작품이라 완성도뿐 아니라 “어떤 기능을 누가 책임지고, 어떻게 씬에 연결하며, 변경 사항을 어떻게 합칠지”를 경험할 수 있었던 프로젝트입니다.</p>
     </article>
 
     <div class="post-actions">

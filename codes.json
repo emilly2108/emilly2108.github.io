@@ -1,7 +1,7 @@
 [
   {
     "title": "도립진자 강화학습 제어 프로젝트",
-    "summary": "RoboMaster S1과 Jetson Orin Nano를 활용해 도립진자 강화학습 알고리즘과 제어 흐름을 실험한 프로젝트입니다.",
+    "summary": "RoboMaster S1과 Jetson Orin Nano를 대상으로 상태 관측→정책 추론→모터 명령 출력 흐름을 설계한 도립진자 강화학습 제어 프로젝트입니다.",
     "tag": "RL / Robotics",
     "date": "2026.06",
     "heroLabel": "🕹️",
@@ -10,16 +10,16 @@
   },
   {
     "title": "Berkeley Humanoid Lite Isaac Lab",
-    "summary": "Isaac Lab에서 휴머노이드 보행·도립진자 강화학습과 MuJoCo·실기 제어를 실험하는 로보틱스 프로젝트입니다.",
+    "summary": "Isaac Lab 보상 함수와 명령 커리큘럼을 조정해 걷지 못하던 이족 모델을 양발 동시 점프형 전진 보행으로 학습시킨 프로젝트입니다.",
     "tag": "Python / Robotics",
-    "date": "2026.06",
+    "date": "2026.01–2026.02",
     "heroLabel": "🤖",
     "url": "code-berkeley-humanoid.html",
     "githubUrl": "https://github.com/emilly2108/berkeley-humanoid-isaaclab"
   },
   {
     "title": "유니티를 활용한 공포게임 협업 작품",
-    "summary": "2025년 7월 14일~8월 18일 GitHub 기록 기준 약 1개월간 친구와 함께 제작한 첫 협업 작품입니다. 담당 파트: 모든 게임 퍼즐 코딩, 사물 객체 상호작용 코딩, 사물 애니메이션 코딩 등.",
+    "summary": "Raycast 기반 상호작용, 상태값 기반 퍼즐 흐름, ScriptableObject 아이템 데이터, Coroutine/Lerp 애니메이션으로 퍼즐·문·서랍·아이템 로직을 구현한 Unity 협업 작품입니다.",
     "tag": "Unity / C#",
     "date": "2025.07–2025.08",
     "heroLabel": "👻",
