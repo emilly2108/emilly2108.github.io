@@ -81,7 +81,7 @@
         }
 
         list.innerHTML = items.map((item) => `
-          <a href="${escapeHtml(item.url)}" class="post-card-link" target="${isCode ? '_blank' : '_self'}" rel="${isCode ? 'noopener noreferrer' : ''}">
+          <a href="${escapeHtml(item.url)}" class="post-card-link">
             <article class="post-card">
               <div class="post-img-box">${escapeHtml(item.heroLabel ?? (isCode ? "💻" : "📝"))}</div>
               <div class="post-info">
@@ -118,8 +118,14 @@
       fetchDataAndRender("codes.json", true);
     }
 
-    // 첫 페이지 로드 시에는 최근 글을 기본으로 보여줍니다.
-    renderPosts();
+    // 첫 페이지 로드 시에는 최근 글을 기본으로 보여주고,
+    // 코드 상세 페이지에서 돌아올 때는 코드 목록을 바로 보여줍니다.
+    const initialParams = new URLSearchParams(window.location.search);
+    if (initialParams.get("view") === "codes") {
+      renderCodes();
+    } else {
+      renderPosts();
+    }
   </script>
 </body>
 </html>

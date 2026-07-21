@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Isaac Lab에서 Berkeley Humanoid Lite 로봇의 강화학습과 제어 실험을 정리한 프로젝트 소개입니다.">
+  <title>Berkeley Humanoid Lite Isaac Lab | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">Python / Robotics</span>
+      <h1 class="post-title">Berkeley Humanoid Lite Isaac Lab</h1>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.06</div>
+      <p class="post-summary">Isaac Lab에서 휴머노이드 보행, 도립진자 강화학습, MuJoCo sim-to-sim, 저수준 제어 흐름을 실험하는 로보틱스 프로젝트입니다.</p>
+    </header>
+
+    <article class="post-content">
+      <p>이 프로젝트는 Berkeley Humanoid Lite 로봇을 Isaac Lab 환경에서 실험하기 위한 코드 묶음입니다. GitHub 기록 기준 저장소는 2026년 6월 25일에 공개되었고, 강화학습 환경 설정과 시뮬레이션 기반 제어 실험을 정리했습니다.</p>
+
+      <ul class="project-facts">
+        <li>
+          <strong>작업 시기</strong>
+          2026년 6월
+        </li>
+        <li>
+          <strong>프로젝트 성격</strong>
+          휴머노이드 로봇 강화학습, 보행 실험, sim-to-sim 검증
+        </li>
+        <li>
+          <strong>주요 기술</strong>
+          Python, Isaac Lab, MuJoCo, Robotics
+        </li>
+      </ul>
+
+      <h2>프로젝트 내용</h2>
+
+      <p>Isaac Lab 환경에서 Berkeley Humanoid Lite의 로봇 에셋과 강화학습 설정을 연결하고, 보행 및 도립진자 실험을 진행할 수 있도록 구성한 프로젝트입니다. 학습 스크립트, 환경 설정, 로봇 에셋, MuJoCo 시뮬레이션 흐름을 함께 다룹니다.</p>
+
+      <h2>핵심 포인트</h2>
+
+      <ul>
+        <li>휴머노이드 보행과 도립진자 과제를 위한 Isaac Lab 환경 구성</li>
+        <li>강화학습 학습·재생·정책 내보내기 흐름 정리</li>
+        <li>MuJoCo 기반 sim-to-sim 실험을 위한 모델 경로와 실행 구조 정리</li>
+        <li>실기 제어와 연결 가능한 저수준 제어 코드 포함</li>
+      </ul>
+
+      <p>로봇 강화학습 프로젝트는 환경 설정, 에셋 경로, 학습 로그, 정책 파일 관리가 조금만 흐트러져도 재현성이 흔들릴 수 있습니다. 이 프로젝트는 그런 부분을 정리해 다음 실험으로 이어가기 쉬운 형태로 구성한 것이 특징입니다.</p>
+    </article>
+
+    <div class="post-actions">
+      <a href="https://github.com/emilly2108/berkeley-humanoid-isaaclab" class="btn-github" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub에서 코드 보기
+      </a>
+      <a href="index.html?view=codes#content-section" class="btn-back">&larr; 코드 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

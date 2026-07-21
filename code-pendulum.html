@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="RoboMaster S1과 Jetson Orin Nano를 활용한 도립진자 강화학습 제어 프로젝트 소개입니다.">
+  <title>도립진자 강화학습 제어 프로젝트 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">RL / Robotics</span>
+      <h1 class="post-title">도립진자 강화학습 제어 프로젝트</h1>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.06</div>
+      <p class="post-summary">RoboMaster S1과 Jetson Orin Nano를 활용해 도립진자 강화학습 알고리즘과 제어 흐름을 실험한 프로젝트입니다.</p>
+    </header>
+
+    <article class="post-content">
+      <p>이 프로젝트는 도립진자 문제를 로봇 제어 관점에서 다루며, 강화학습 알고리즘을 실제 장치와 연결하는 흐름을 실험하기 위해 정리한 코드입니다. GitHub 기록 기준 저장소는 2026년 6월 25일에 공개되었습니다.</p>
+
+      <ul class="project-facts">
+        <li>
+          <strong>작업 시기</strong>
+          2026년 6월
+        </li>
+        <li>
+          <strong>프로젝트 성격</strong>
+          도립진자 강화학습 알고리즘과 로봇 제어 실험
+        </li>
+        <li>
+          <strong>주요 장비</strong>
+          RoboMaster S1, Jetson Orin Nano
+        </li>
+      </ul>
+
+      <h2>프로젝트 내용</h2>
+
+      <p>도립진자는 균형을 잃기 쉬운 시스템을 제어해야 하므로 강화학습과 로봇 제어를 연결해 보기 좋은 문제입니다. 이 프로젝트에서는 로봇이 현재 상태를 바탕으로 어떤 제어 입력을 선택해야 하는지 실험하는 데 초점을 두었습니다.</p>
+
+      <h2>핵심 포인트</h2>
+
+      <ul>
+        <li>도립진자 균형 제어를 위한 강화학습 알고리즘 실험</li>
+        <li>RoboMaster S1과 Jetson Orin Nano 기반 제어 흐름 구성</li>
+        <li>센서 입력, 제어 명령, 학습 정책을 연결하는 구조 탐색</li>
+        <li>로봇 강화학습을 실제 하드웨어 문제로 확장하기 위한 기반 코드 정리</li>
+      </ul>
+
+      <p>이 프로젝트는 이후 더 복잡한 로봇 강화학습 실험으로 넘어가기 위한 출발점 역할을 합니다. 단순한 예제가 아니라 실제 장치와 제어 흐름을 엮어 보며, 학습 정책이 물리 시스템에 적용될 때 어떤 점을 고려해야 하는지 확인하는 데 의미가 있습니다.</p>
+    </article>
+
+    <div class="post-actions">
+      <a href="https://github.com/emilly2108/pendulum.git" class="btn-github" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub에서 코드 보기
+      </a>
+      <a href="index.html?view=codes#content-section" class="btn-back">&larr; 코드 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

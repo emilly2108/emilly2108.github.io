@@ -1,10 +1,21 @@
 [
   {
+    "title": "도립진자 강화학습 제어 프로젝트",
+    "summary": "RoboMaster S1과 Jetson Orin Nano를 활용해 도립진자 강화학습 알고리즘과 제어 흐름을 실험한 프로젝트입니다.",
+    "tag": "RL / Robotics",
+    "date": "2026.06",
+    "heroLabel": "🕹️",
+    "url": "code-pendulum.html",
+    "githubUrl": "https://github.com/emilly2108/pendulum.git"
+  },
+  {
     "title": "Berkeley Humanoid Lite Isaac Lab",
     "summary": "Isaac Lab에서 휴머노이드 보행·도립진자 강화학습과 MuJoCo·실기 제어를 실험하는 로보틱스 프로젝트입니다.",
     "tag": "Python / Robotics",
+    "date": "2026.06",
     "heroLabel": "🤖",
-    "url": "https://github.com/emilly2108/berkeley-humanoid-isaaclab"
+    "url": "code-berkeley-humanoid.html",
+    "githubUrl": "https://github.com/emilly2108/berkeley-humanoid-isaaclab"
   },
   {
     "title": "유니티를 활용한 공포게임 협업 작품",
@@ -12,13 +23,7 @@
     "tag": "Unity / C#",
     "date": "2025.07–2025.08",
     "heroLabel": "👻",
-    "url": "https://github.com/emilly2108/3Dproject.git"
-  },
-  {
-    "title": "pendulum",
-    "summary": "RoboMaster S1과 Jetson Orin Nano를 활용한 도립진자 강화학습 알고리즘 제어 소스코드입니다.",
-    "tag": "RL / Robotics",
-    "heroLabel": "🕹️",
-    "url": "https://github.com/emilly2108/pendulum.git"
+    "url": "code-horror-game.html",
+    "githubUrl": "https://github.com/emilly2108/3Dproject.git"
   }
 ]
