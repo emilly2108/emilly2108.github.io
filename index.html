@@ -89,7 +89,7 @@
                   <span class="post-tag">${escapeHtml(item.tag)}</span>
                   <span class="post-date">
                     <i class="${isCode ? 'fab fa-github' : 'far fa-calendar'}"></i> 
-                    ${isCode ? 'GitHub' : formatDate(item.date)}
+                    ${isCode ? escapeHtml(item.date ?? 'GitHub') : formatDate(item.date)}
                   </span>
                 </div>
                 <h3 class="post-card-title">${escapeHtml(item.title)}</h3>
