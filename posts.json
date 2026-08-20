@@ -1,5 +1,14 @@
 [
   {
+    "slug": "fsm-hfsm-state-machines",
+    "title": "FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지",
+    "tag": "Architecture",
+    "heroLabel": "FSM/HFSM",
+    "summary": "FSM의 상태·이벤트·전이·동작 개념부터 Moore/Mealy 방식, 상태 폭발 문제, HFSM의 계층 구조와 이벤트 버블링까지 정리합니다.",
+    "date": "2026-08-20",
+    "url": "fsm-hfsm-state-machines.html"
+  },
+  {
     "slug": "vla-introduction",
     "title": "VLA란 무엇인가? 비전·언어·행동을 연결하는 로봇 AI",
     "tag": "Robot AI",

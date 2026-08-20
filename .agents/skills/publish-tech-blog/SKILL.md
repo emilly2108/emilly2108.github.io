@@ -1,11 +1,17 @@
 ---
 name: publish-tech-blog
-description: Convert attached or local study materials, rough notes, code, transcripts, TXT, Markdown, PDF, DOCX, HWP/HWPX, images, or mixed source files into a polished Korean developer-style technical blog post, add it to this GitHub Pages site, validate the result, then commit all repository changes and push them to origin/main. Use only when the user explicitly asks to publish, upload, post, deploy, or add the material to the tech blog.
+description: Convert attached or local study materials, rough notes, code, transcripts, TXT, Markdown, PDF, DOCX, HWP/HWPX, images, or mixed source files into a polished Korean developer-style technical blog post, add it to this GitHub Pages site, validate the result, then commit all repository changes and push them to origin/main. Use when the user's trimmed message is exactly "기술 블로그" with one or more attached/source files, or when the user explicitly asks to publish, upload, post, deploy, or add material to the tech blog.
 ---
 
 # Publish Tech Blog
 
 Turn unstructured learning material into a Korean technical article and publish it without calling the OpenAI Platform API. Use Codex's current model to edit the local repository directly.
+
+## Shortcut
+
+Treat a message whose entire trimmed text is `기술 블로그` and that includes or clearly refers to source material as an explicit request to run the full workflow, including commit and push.
+
+Do not apply this shortcut when `기술 블로그` appears inside a longer question or sentence.
 
 ## Workflow
 

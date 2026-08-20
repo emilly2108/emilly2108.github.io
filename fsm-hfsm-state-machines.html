@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FSM의 상태·이벤트·전이·동작 개념부터 Moore/Mealy 방식, 상태 폭발 문제, HFSM의 계층 구조와 이벤트 버블링까지 정리합니다.">
+  <title>FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">Architecture</span>
+      <h1 class="post-title">FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지</h1>
+      <div class="post-meta"><i class="far fa-calendar"></i> 2026-08-20</div>
+      <p class="post-summary">FSM의 상태·이벤트·전이·동작 개념부터 Moore/Mealy 방식, 상태 폭발 문제, HFSM의 계층 구조와 이벤트 버블링까지 정리합니다.</p>
+    </header>
+
+    <article class="post-content">
+      <p>FSM(Finite State Machine)은 프로그램의 동작을 “상태”와 “전이”로 나누어 생각하는 방식이다. 게임 캐릭터, 문 제어 장치, 로봇 동작 모드, UI 흐름처럼 현재 상황에 따라 가능한 행동이 달라지는 시스템을 설명할 때 특히 유용하다.</p>
+      <p>처음에는 상태 몇 개와 이벤트 몇 개만 있으면 단순한 <code>if/elif</code>로도 충분해 보인다. 하지만 상태가 늘어나면 전이 조건이 한 파일에 몰리고, 공통 처리 코드가 반복되며, 어떤 상태에서 어떤 이벤트가 가능한지 추적하기 어려워진다. 이 글에서는 기본 FSM을 먼저 정리하고, 그 한계를 줄이기 위해 등장하는 HFSM(Hierarchical Finite State Machine)을 함께 살펴본다.</p>
+      <h2>FSM이란 무엇인가</h2>
+      <p>FSM은 유한한 개수의 상태를 정의하고, 입력이나 이벤트에 따라 한 상태에서 다른 상태로 이동하는 모델이다. 핵심은 시스템을 무한히 흐르는 코드가 아니라, 현재 상태와 전이 규칙의 조합으로 해석한다는 점이다.</p>
+      <pre><code class="language-text">현재 상태 + 이벤트 + 조건
+              ↓
+      다음 상태 + 동작
+      </code></pre>
+      <p>예를 들어 자동문을 생각하면 <code>닫힘</code>, <code>열림</code>, <code>여는 중</code>, <code>닫는 중</code> 같은 상태를 둘 수 있다. “열기 버튼 입력”이라는 이벤트가 들어왔을 때, 현재 상태가 <code>닫힘</code>이면 <code>여는 중</code>으로 이동하고 모터를 동작시킬 수 있다.</p>
+      <h2>FSM의 기본 구성 요소</h2>
+      <p>FSM은 보통 다음 요소로 구성된다.</p>
+      <table>
+      <thead>
+      <tr>
+      <th>구성 요소</th>
+      <th>의미</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>상태(state)</td>
+      <td>시스템이 어떤 동작을 하고 있거나 어떤 상황에 놓여 있는지 나타내는 표현</td>
+      </tr>
+      <tr>
+      <td>입력(input) 또는 이벤트(event)</td>
+      <td>외부에서 들어오는 신호, 데이터, 사용자 조작</td>
+      </tr>
+      <tr>
+      <td>전이 규칙(transition)</td>
+      <td>어떤 상태에서 어떤 상태로 이동할 수 있는지 정의하는 규칙</td>
+      </tr>
+      <tr>
+      <td>출력(output) 또는 동작(action)</td>
+      <td>특정 상태나 전이 과정에서 발생하는 결과 또는 실행 코드</td>
+      </tr>
+      <tr>
+      <td>초기 상태(initial state)</td>
+      <td>FSM이 시작될 때 놓이는 첫 상태</td>
+      </tr>
+      </tbody>
+      </table>
+      <p>상태 머신을 설계할 때는 “상태 이름”보다 “어떤 이벤트가 어떤 조건에서 상태를 바꾸는가”가 더 중요하다. 상태 목록만 있으면 정적인 분류에 그치지만, 전이 규칙이 있어야 실제 동작 흐름이 된다.</p>
+      <h2>전이 조건과 전이 동작 구분하기</h2>
+      <p>전이와 관련해 자주 헷갈리는 개념이 <code>guard</code>와 <code>action</code>이다.</p>
+      <ul>
+      <li><code>guard</code>: 전이할 수 있는가?</li>
+      <li><code>action</code>: 전이할 때 무엇을 할 것인가?</li>
+      </ul>
+      <p>예를 들어 <code>닫힘</code> 상태에서 <code>열기</code> 이벤트가 들어왔다고 해도, 안전 센서가 막혀 있다면 문을 열면 안 될 수 있다. 이때 안전 센서 확인은 guard에 가깝다. 반면 실제로 모터를 켜거나 로그를 남기거나 애니메이션을 시작하는 일은 action에 가깝다.</p>
+      <p>이 구분이 흐려지면 상태 전이 코드가 “조건 검사 + 부수 효과 + 다음 상태 변경”이 뒤섞인 덩어리가 된다. 작은 프로그램에서는 큰 문제가 아닐 수 있지만, 상태가 늘어날수록 디버깅이 급격히 어려워진다.</p>
+      <h2>출력과 동작은 어떻게 다른가</h2>
+      <p>자료에서는 출력과 동작도 구분하고 있다.</p>
+      <ul>
+      <li>출력: 모터 속도 <code>100</code>, LED 켜짐, “공격 중”이라는 결과처럼 외부로 드러나는 값이나 신호</li>
+      <li>동작: 모터를 켜는 함수, 애니메이션 재생 함수, 공격 함수 실행처럼 결과를 만들기 위해 실행되는 코드</li>
+      </ul>
+      <p>즉 출력은 시스템이 만들어낸 결과이고, 동작은 그 결과를 만들기 위해 수행한 절차에 가깝다. 실제 코드에서는 둘이 함께 나타나는 경우가 많지만, 설계 단계에서는 구분해두는 편이 좋다.</p>
+      <h2>Moore FSM과 Mealy FSM</h2>
+      <p>FSM은 출력이 언제 결정되는지에 따라 Moore 방식과 Mealy 방식으로 나눌 수 있다.</p>
+      <table>
+      <thead>
+      <tr>
+      <th>방식</th>
+      <th>출력 결정 기준</th>
+      <th>직관적인 표현</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Moore FSM</td>
+      <td>현재 상태</td>
+      <td><code>현재 상태 → 출력</code></td>
+      </tr>
+      <tr>
+      <td>Mealy FSM</td>
+      <td>현재 상태 + 입력</td>
+      <td><code>현재 상태 + 입력 → 출력</code></td>
+      </tr>
+      </tbody>
+      </table>
+      <h3>Moore 방식 예시</h3>
+      <p>Moore 방식에서는 출력이 상태에 묶인다. 자동문 예시로 보면 다음처럼 해석할 수 있다.</p>
+      <pre><code class="language-text">닫힘 상태   → 모터 정지
+      열림 상태   → 모터 정지
+      여는 중 상태 → 모터 열기
+      닫는 중 상태 → 모터 닫기
+      </code></pre>
+      <p>현재 상태가 <code>여는 중</code>이면 모터가 열리는 방향으로 동작하고, 현재 상태가 <code>닫힘</code>이면 모터는 멈춘다. 입력은 상태를 바꾸는 데 영향을 주지만, 출력 자체는 현재 상태에 의해 결정된다.</p>
+      <h3>Mealy 방식 예시</h3>
+      <p>Mealy 방식에서는 현재 상태와 입력의 조합이 출력을 만든다.</p>
+      <pre><code class="language-text">닫힘 상태 + 열기 버튼 입력 → 즉시 모터 작동
+      </code></pre>
+      <p>같은 <code>닫힘</code> 상태라도 어떤 입력이 들어왔는지에 따라 출력이 달라질 수 있다. 입력에 빠르게 반응하는 모델을 만들 때 직관적이지만, 입력과 출력이 강하게 엮이기 때문에 전이 조건과 동작을 명확히 관리해야 한다.</p>
+      <h3>실제 코드에서는 엄격히 나누지 않을 때가 많다</h3>
+      <p>파이썬 프로그램이나 일반 애플리케이션 코드에서는 Moore/Mealy를 이론처럼 엄격히 나누기보다, 상태 클래스의 <code>enter()</code>, <code>update()</code>, <code>exit()</code> 같은 메서드 안에서 동작을 실행하는 방식이 더 흔하다.</p>
+      <pre><code class="language-text">enter()  → 상태에 진입할 때 한 번 실행
+      update() → 해당 상태에 머무는 동안 반복 실행
+      exit()   → 상태에서 빠져나갈 때 한 번 실행
+      </code></pre>
+      <p>예를 들어 공격 상태라면 다음처럼 생각할 수 있다.</p>
+      <pre><code class="language-text">enter()  → 공격 애니메이션 시작
+      update() → 공격 진행
+      exit()   → 공격 애니메이션 종료
+      </code></pre>
+      <p>이 구조는 상태별 책임을 나누기 좋다. 상태 전환 자체는 상태 머신이 관리하고, 상태에 들어가거나 머무르거나 빠져나갈 때의 세부 동작은 각 상태가 담당하게 만들 수 있기 때문이다.</p>
+      <h2>단순 FSM의 한계: 상태가 많아질 때 생기는 문제</h2>
+      <p>FSM의 장점은 명확함이지만, 모든 상태가 같은 레벨에 놓인다는 점은 한계가 되기도 한다. 상태가 많아지면 가능한 전이 수가 빠르게 증가한다.</p>
+      <p>대표적인 문제는 다음과 같다.</p>
+      <ul>
+      <li>상태 전이 코드가 하나의 큰 <code>if/elif</code> 구조나 한 파일에 몰린다.</li>
+      <li>여러 상태에서 공통 이벤트 처리 코드가 반복된다.</li>
+      <li>상태가 늘수록 조건문이 복잡해진다.</li>
+      <li>어떤 상태에서 어떤 이벤트가 가능한지 찾기 어려워진다.</li>
+      <li>공통 동작을 재사용하기 어렵다.</li>
+      </ul>
+      <p>처음에는 <code>Idle</code>, <code>Move</code>, <code>Attack</code> 정도였던 상태가 <code>Chase</code>, <code>Retreat</code>, <code>Stunned</code>, <code>Dead</code>, <code>Reload</code>, <code>Interact</code>처럼 늘어나면, 단순 FSM은 점점 거대한 전이표가 된다. 이때 계층 구조를 도입하는 HFSM이 도움이 된다.</p>
+      <h2>HFSM이란 무엇인가</h2>
+      <p>HFSM(Hierarchical Finite State Machine)은 계층형 유한 상태 머신이다. 말 그대로 FSM 안에 하위 FSM을 넣는 구조라고 볼 수 있다.</p>
+      <p>자료의 캐릭터 예시는 다음과 같다.</p>
+      <pre><code class="language-text">Character
+      ├── Peaceful
+      │   ├── Idle
+      │   └── Patrol
+      └── Combat
+          ├── Chase
+          ├── Attack
+          └── Retreat
+      </code></pre>
+      <p>단순 FSM에서는 <code>Idle</code>, <code>Patrol</code>, <code>Chase</code>, <code>Attack</code>, <code>Retreat</code>가 모두 같은 레벨에 있다. HFSM에서는 이 상태들을 <code>Peaceful</code>과 <code>Combat</code>이라는 상위 상태로 묶는다. 그래서 현재 상태를 하나의 이름이 아니라 경로로 바라본다.</p>
+      <pre><code class="language-text">Character / Combat / Attack
+      </code></pre>
+      <p>이렇게 보면 <code>Attack</code>은 단독 상태가 아니라 <code>Combat</code>이라는 맥락 안에 있는 하위 상태다. 덕분에 전투 상태 전체에 공통으로 적용되는 이벤트나 동작을 상위 상태에 둘 수 있다.</p>
+      <h2>이벤트 버블링: 하위 상태에서 부모 상태로</h2>
+      <p>HFSM에서 중요한 개념 중 하나가 이벤트 버블링이다. 이벤트를 현재 하위 상태가 먼저 처리하고, 처리하지 못하면 부모 상태로 넘기는 방식이다.</p>
+      <pre><code class="language-text">Attack이 이벤트 처리 시도
+      → 처리하지 못하면 Combat이 처리
+      → 그래도 못 하면 Character가 처리
+      </code></pre>
+      <p>예를 들어 <code>Attack</code> 상태에서 <code>적을 잃어버림</code> 이벤트를 처리하지 못한다면, 상위의 <code>Combat</code> 상태가 이를 받아 <code>Chase</code>나 <code>Retreat</code> 같은 전투 관련 상태 전환으로 처리할 수 있다. 더 상위의 <code>Character</code>는 모든 상태에 공통인 이벤트, 예를 들어 <code>사망</code>이나 <code>비활성화</code> 같은 이벤트를 처리할 수 있다.</p>
+      <p>다만 이벤트 전달 방향은 HFSM 구현 규칙에 따라 달라질 수 있다. 현재 하위 상태에서 부모 상태로 올리는 방식도 있고, 부모 이벤트를 하위 FSM으로 전파하는 방식도 가능하다. 따라서 HFSM을 직접 구현하거나 라이브러리를 사용할 때는 이벤트 처리 우선순위를 먼저 확인해야 한다.</p>
+      <h2>언제 FSM을 쓰고 언제 HFSM을 쓸까</h2>
+      <p>상태 수가 적고 전이가 단순하다면 FSM만으로 충분하다. 문 제어, 간단한 UI 모드, 짧은 게임 오브젝트 동작처럼 상태 간 관계가 납작한 구조라면 단순 FSM이 더 읽기 쉽다.</p>
+      <p>반대로 상태가 자연스럽게 그룹으로 묶이고, 여러 하위 상태가 공통 이벤트나 공통 동작을 공유한다면 HFSM이 더 적합하다. 캐릭터 AI처럼 <code>Peaceful</code>과 <code>Combat</code>이라는 큰 모드가 있고, 각 모드 안에 세부 상태가 있는 경우가 대표적이다.</p>
+      <p>중요한 판단 기준은 “상태를 계층으로 묶었을 때 중복이 줄어드는가”다. 계층을 만들었는데 오히려 이벤트 흐름을 추적하기 어려워진다면, HFSM이 문제를 해결하기보다 복잡도를 옮겨 놓는 결과가 될 수 있다.</p>
+      <h2>구현할 때의 작은 설계 팁</h2>
+      <p>FSM/HFSM을 코드로 옮길 때는 다음 기준을 먼저 정리해두면 좋다.</p>
+      <ol>
+      <li>상태 이름을 동작 중심으로 정한다.</li>
+      <li>이벤트와 guard를 분리한다.</li>
+      <li>전이 action과 상태 생명주기 메서드(<code>enter</code>, <code>update</code>, <code>exit</code>)의 역할을 나눈다.</li>
+      <li>공통 이벤트가 반복되면 상위 상태로 올릴 수 있는지 확인한다.</li>
+      <li>이벤트 버블링 방향과 처리 우선순위를 문서화한다.</li>
+      </ol>
+      <p>특히 HFSM에서는 “현재 상태”가 단일 값이 아니라 경로라는 점을 의식해야 한다. <code>Attack</code>만 보는 것이 아니라 <code>Character / Combat / Attack</code> 전체 맥락에서 이벤트를 해석해야 한다.</p>
+      <h2>마무리</h2>
+      <p>FSM은 시스템을 상태와 전이로 나누어 이해하게 해주는 단순하지만 강력한 모델이다. Moore/Mealy 방식처럼 출력이 결정되는 기준을 나누어 생각하면 상태와 입력, 동작의 관계를 더 선명하게 볼 수 있다.</p>
+      <p>하지만 상태가 많아지고 공통 이벤트가 반복되면 단순 FSM은 빠르게 복잡해진다. HFSM은 상태를 계층으로 묶어 이런 중복을 줄이고, 이벤트를 하위 상태와 부모 상태 사이에서 처리할 수 있게 해준다. 핵심은 더 멋진 구조를 쓰는 것이 아니라, 상태 변화의 책임을 더 읽기 쉬운 위치에 배치하는 것이다.</p>
+    </article>
+
+    <a href="index.html" class="btn-back">&larr; 전체 글 목록으로</a>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>
