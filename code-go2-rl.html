@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서와 실시간 그래프 설정을 추가한 프로젝트 소개입니다.">
+  <title>go2 강화학습 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">Python / Robotics</span>
+      <h1 class="post-title">go2 강화학습</h1>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.08</div>
+      <p class="post-summary">Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서를 부착하고, 정책 재생 중 IMU 값 출력과 실시간 그래프 확인 기능을 추가한 프로젝트입니다.</p>
+    </header>
+
+    <article class="post-content">
+      <p>이 프로젝트는 Unitree Go2 로봇의 locomotion 강화학습 환경을 Isaac Lab에서 구성한 코드입니다. 기존 Go2 환경에 IMU 센서를 추가하고, 정책이 학습·재생되는 동안 로봇의 흔들림과 기울어짐을 더 직접적으로 확인할 수 있도록 관측값, 보상항, 그래프 출력 흐름을 정리했습니다.</p>
+
+      <ul class="project-facts">
+        <li>
+          <strong>작업 시기</strong>
+          2026년 8월
+        </li>
+        <li>
+          <strong>내 작업 파트</strong>
+          Go2 IMU 센서 부착, IMU 기반 관측·보상 설정, 정책 재생 중 IMU 출력과 live plot 기능 구성
+        </li>
+        <li>
+          <strong>주요 기술</strong>
+          Python, Isaac Lab, RSL-RL, Unitree Go2, IMU, Matplotlib
+        </li>
+      </ul>
+
+      <h2>구현 방식</h2>
+
+      <ul>
+        <li><code>UnitreeGo2RoughEnvCfg</code>에 <code>ImuCfg</code>를 추가해 Go2 base 링크 기준 IMU 센서를 부착했습니다.</li>
+        <li>정책 관측 순서를 gyro, projected gravity, linear acceleration, command, joint state, previous action 순서로 정리해 실제 Go2 policy runner와 맞추도록 구성했습니다.</li>
+        <li><code>imu_ang_vel_xy_l2</code>, <code>imu_orientation_l2</code>, <code>imu_lin_acc_l2</code> 보상항으로 roll/pitch 흔들림과 과도한 가속을 penalty로 반영했습니다.</li>
+        <li>flat/rough 환경을 나누고, play 전용 설정에서는 환경 수와 randomization을 줄여 정책 확인이 쉽도록 구성했습니다.</li>
+        <li><code>scripts/rsl_rl/play.py</code>에 <code>--print_imu</code>, <code>--plot_imu</code> 옵션을 추가해 IMU 값을 콘솔과 실시간 그래프로 확인할 수 있게 했습니다.</li>
+      </ul>
+
+      <h2>그래프 설정</h2>
+
+      <p>정책 재생 시 <code>ImuLivePlotter</code>가 2x2 그래프를 띄워 gyroscope, accelerometer, projected gravity, 흔들림 지표를 함께 보여줍니다. 이를 통해 정책이 앞으로 이동하는지만 보는 것이 아니라, 몸체가 얼마나 흔들리는지와 기울어짐이 누적되는지를 확인할 수 있습니다.</p>
+
+      <h2>공개 저장소 정리</h2>
+
+      <p>공개 저장소에는 소스 코드와 설정 파일만 남겼고, 학습 로그, TensorBoard 이벤트, 모델 체크포인트, ONNX/PT 정책 파일, <code>logs/</code>, <code>outputs/</code>, 캐시 파일은 제외했습니다.</p>
+    </article>
+
+    <div class="post-actions">
+      <a href="https://github.com/emilly2108/go2-rl" class="btn-github" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub에서 코드 보기
+      </a>
+      <a href="index.html?view=codes#content-section" class="btn-back">&larr; 코드 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

@@ -1,5 +1,14 @@
 [
   {
+    "title": "go2 강화학습",
+    "summary": "Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서를 부착하고, 정책 재생 중 IMU 값 출력과 실시간 그래프 확인 기능을 추가한 프로젝트입니다.",
+    "tag": "Python / Robotics",
+    "date": "2026.08",
+    "heroLabel": "🐕",
+    "url": "code-go2-rl.html",
+    "githubUrl": "https://github.com/emilly2108/go2-rl"
+  },
+  {
     "title": "도립진자 강화학습 제어 프로젝트",
     "summary": "RoboMaster S1과 Jetson Orin Nano를 대상으로 상태 관측→정책 추론→모터 명령 출력 흐름을 설계한 도립진자 강화학습 제어 프로젝트입니다.",
     "tag": "RL / Robotics",
