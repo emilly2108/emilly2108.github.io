@@ -9,6 +9,15 @@
     "githubUrl": "https://github.com/emilly2108/go2-rl"
   },
   {
+    "title": "LLM 학교 축제 쿠지 게임",
+    "summary": "llm을 활용한 2026년 학교 축제용 쿠지 게임 제작 프로젝트로, Unity UI와 C# 스크립트로 카드 선택, 랜덤 선택, 보상 셔플, 드래그 공개 연출, 영상 재생 흐름을 구현했습니다.",
+    "tag": "Unity / C#",
+    "date": "2026.04.16–2026.04.21",
+    "heroLabel": "🎫",
+    "url": "code-llm-festival-kuji-game.html",
+    "githubUrl": "https://github.com/emilly2108/llm-festival-kuji-game"
+  },
+  {
     "title": "도립진자 강화학습 제어 프로젝트",
     "summary": "RoboMaster S1과 Jetson Orin Nano를 대상으로 상태 관측→정책 추론→모터 명령 출력 흐름을 설계한 도립진자 강화학습 제어 프로젝트입니다.",
     "tag": "RL / Robotics",

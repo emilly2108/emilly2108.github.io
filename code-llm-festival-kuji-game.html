@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="llm을 활용한 2026년 학교 축제용 쿠지 게임 제작 프로젝트 소개입니다. Unity와 C#으로 카드 선택, 랜덤 선택, 보상 셔플, 결과 공개 연출을 구현했습니다.">
+  <title>LLM 학교 축제 쿠지 게임 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">Unity / C#</span>
+      <h1 class="post-title">LLM 학교 축제 쿠지 게임</h1>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.04.16–2026.04.21</div>
+      <p class="post-summary">llm을 활용한 2026년 학교 축제용 쿠지 게임 제작 프로젝트입니다. Unity UI와 C# 스크립트로 카드 선택, 랜덤 선택, 보상 셔플, 드래그 공개 연출, 결과 영상 재생 흐름을 구현했습니다.</p>
+    </header>
+
+    <article class="post-content">
+      <h2>프로젝트 설명</h2>
+
+      <p>이 프로젝트는 학교 축제 현장에서 쿠지 뽑기 이벤트를 진행하기 위해 만든 Unity 기반 게임입니다. 사용자가 뽑을 카드 수를 정하고, 직접 선택 또는 랜덤 선택으로 카드를 고른 뒤, 드래그 연출을 통해 결과를 공개하는 구조로 제작했습니다. 기획과 화면 구성 과정에서는 llm을 활용한 2026년 학교 축제용 쿠지 게임 제작이라는 방향을 중심에 두고, 현장에서 바로 이해할 수 있는 UI 흐름을 우선했습니다.</p>
+
+      <ul class="project-facts">
+        <li>
+          <strong>제작 기간</strong>
+          2026년 4월 16일 ~ 2026년 4월 21일
+        </li>
+        <li>
+          <strong>프로젝트 목적</strong>
+          학교 축제 부스에서 사용할 수 있는 쿠지 카드 선택·결과 공개 게임 제작
+        </li>
+        <li>
+          <strong>주요 기술</strong>
+          Unity, C#, TextMeshPro, Unity UI, VideoPlayer, Coroutine
+        </li>
+      </ul>
+
+      <section class="project-video">
+        <h2>시연 영상</h2>
+        <video controls preload="metadata">
+          <source src="assets/videos/llm-festival-kuji-game-demo-2026.mp4" type="video/mp4">
+          사용 중인 브라우저에서는 영상 재생을 지원하지 않습니다.
+        </video>
+      </section>
+
+      <h2>구현 방식</h2>
+
+      <ul>
+        <li><code>GameManager</code>를 싱글톤 형태로 두고 선택 목표 수, 현재 선택 카드 목록, 시작 패널과 카드 패널 전환, 버튼 활성화 조건을 한 곳에서 관리했습니다.</li>
+        <li><code>SelectableCard</code>는 <code>Button</code>과 <code>Outline</code> 컴포넌트를 요구하도록 구성해, 선택 가능 여부와 선택 시 glow/scale 피드백을 카드 단위로 처리했습니다.</li>
+        <li><code>StartButton</code>에서 A상~F상 보상 풀을 만들고 셔플한 뒤 카드에 배정해, 실행할 때마다 결과 배치가 고정되지 않도록 했습니다.</li>
+        <li><code>RandomSelectButton</code>은 선택 가능한 카드만 후보로 모아 무작위 선택하고, 실제 선택 등록은 <code>GameManager.TrySelect()</code>로 통일해 직접 선택과 랜덤 선택 흐름이 어긋나지 않게 했습니다.</li>
+        <li><code>ResultManager</code>는 선택된 카드를 순서대로 공개하며, 마우스 드래그 거리와 threshold를 이용해 앞면 이미지가 줄어들고 결과가 나타나는 reveal 연출을 구현했습니다.</li>
+        <li><code>VideoController</code>는 결과 공개 후 Unity <code>VideoPlayer</code>를 재생하고, 영상 종료 이벤트에서 다음 카드로 넘어가는 흐름을 연결했습니다.</li>
+      </ul>
+
+      <h2>정리 포인트</h2>
+
+      <p>단순한 버튼 클릭 뽑기가 아니라 선택 개수 제한, 진행도 표시, 랜덤 선택, 카드 공개 연출, 보상 잔여량 표시, 영상 재생 후 다음 카드 진행까지 하나의 사용 흐름으로 연결했습니다. Unity 프로젝트 특성상 공개 저장소에는 제공받은 <code>Assets/</code> 구조를 유지하고, <code>Library/</code>, <code>Temp/</code>, 빌드 결과물, 캐시 파일은 제외했습니다.</p>
+    </article>
+
+    <div class="post-actions">
+      <a href="https://github.com/emilly2108/llm-festival-kuji-game" class="btn-github" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub에서 코드 보기
+      </a>
+      <a href="index.html?view=codes#content-section" class="btn-back">&larr; 코드 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>
