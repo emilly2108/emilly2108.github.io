@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VLA란 무엇인가? 비전·언어·행동을 연결하는 로봇 AI를 작성할 때 참고한 원본 자료입니다.">
+  <title>원본 자료: VLA란 무엇인가? 비전·언어·행동을 연결하는 로봇 AI | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="../index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container source-container">
+    <header class="post-header">
+      <span class="post-category">Original Source</span>
+      <h1 class="post-title">원본 자료: VLA란 무엇인가? 비전·언어·행동을 연결하는 로봇 AI</h1>
+      <p class="post-summary">기술 블로그 글을 작성할 때 참고한 원문입니다. 본문과 비교해 정리·편집된 범위를 확인할 수 있습니다.</p>
+    </header>
+
+    <article class="post-content">
+<section class="source-section">
+  <h2>VLA.txt</h2>
+  <pre class="source-content"># VLA
+VLA는 Vision-Language-Action의 약자. 시각 정보와 자연어 명령을 이해하고, 이를 바탕으로 로봇의 행동을 생성하는 인공지능 모델. 기존 로봇처럼 미리 정의된 동작만 실행하는 것이 아니라 주변 상황을 이해하고 적절한 행동을 스스로 결정하는 것을 목표로 함.
+Vision + Language -&gt; Action
+
+VLA의 세 가지 요소
+
+Vision
+카메라나 센서를 통해 주변 환경을 인식하는 기능. 물체의 위치, 형태, 색상, 거리, 주변 환경의 상태 등을 파악함. 예를 들어 카메라 영상에서 빨간 컵의 위치와 형태를 인식함.
+
+Language
+사람이 사용하는 자연어 명령을 이해하는 기능. 예를 들어 “빨간 컵을 집어서 책상 오른쪽에 놓아줘”라는 명령을 받으면 빨간 컵이 무엇인지, 어디에 있는지, 어디로 이동시켜야 하는지, 어떤 순서로 작업해야 하는지를 해석함.
+
+Action
+Vision과 Language 정보를 바탕으로 실제 로봇의 움직임을 생성하는 단계. 로봇 팔의 관절을 어떻게 움직일지, 물체에 어떤 경로로 접근할지, 어느 정도의 힘으로 물체를 잡을지, 물체를 어디에 놓을지 등을 결정함.
+
+VLA의 기본 처리 흐름
+카메라 영상 + 사용자의 언어 명령 -&gt; 환경과 명령 이해 -&gt; 작업 목표와 대상 파악 -&gt; 로봇 행동 생성 -&gt; 관절 제어 및 작업 수행
+
+기존 로봇과 VLA의 차이
+
+기존 로봇
+개발자가 로봇의 동작을 직접 프로그래밍함. 물체를 집는 작업을 수행하려면 물체의 위치 계산, 로봇 관절 각도 계산, 이동 경로 작성, 집는 순서 정의, 그립 힘 설정, 예외 상황 처리 등을 별도로 작성해야 함. 정해진 상황과 작업에는 강하지만 새로운 작업을 수행하려면 프로그램을 다시 작성해야 함.
+
+VLA 로봇
+영상과 언어 명령을 함께 이해하고 사용자가 자연어로 작업을 지시하면 필요한 행동을 생성함.
+
+예시
+“사과를 집어서 상자에 넣어줘” -&gt; 사과 인식 -&gt; 사과의 위치 파악 -&gt; 로봇 팔을 사과 쪽으로 이동 -&gt; 사과를 집음 -&gt; 상자 위치로 이동 -&gt; 사과를 상자에 넣음
+
+VLA 모델의 핵심 특징
+멀티모달 이해
+이미지와 언어를 동시에 처리하여 현재 환경과 사용자의 의도를 함께 이해할 수 있음.
+
+ 행동 생성
+
+단순히 사물을 인식하거나 명령을 해석하는 데서 끝나지 않고, 실제 로봇이 수행할 움직임과 제어 명령을 생성함.
+
+범용성
+하나의 모델로 여러 작업을 수행하는 것을 목표로 함.
+
+일반화 능력
+학습하지 않은 대상이나 상황에도 기존 지식을 바탕으로 대응하는 능력. 예를 들어 학습 과정에서 파란 컵만 보았더라도 실제 환경에서 빨간 컵을 발견하면 컵이라는 개념을 바탕으로 비슷한 작업을 수행할 수 있음.
+
+ VLA 학습 데이터
+
+VLA 모델은 대량의 데이터로 학습됨. 학습 데이터에는 카메라 영상, 사용자의 언어 명령, 로봇이 수행한 행동, 로봇의 관절 움직임, 작업 결과 등이 포함됨.
+
+예시
+
+“사과를 집어 상자에 넣는다”라는 작업을 반복해서 기록 -&gt; 사과 인식 -&gt; 사용자의 명령 이해 -&gt; 사과를 집는 방법 학습 -&gt; 상자까지 이동하는 방법 학습 -&gt; 사과를 놓는 방법 학습
+
+ VLA의 일반적인 학습 방식
+
+인터넷의 이미지와 언어 데이터를 활용하여 사전 학습 -&gt; 실제 로봇 데이터를 이용해 추가 학습 -&gt; 로봇의 센서와 관절 제어에 맞게 조정. 인터넷 데이터는 시각적 개념과 언어 이해에 도움을 주고, 로봇 데이터는 실제 행동 생성에 사용됨.
+
+VLA와 대규모 언어 모델
+
+과거 로봇 시스템은 시각 인식 프로그램, 언어 처리 프로그램, 동작 계획 프로그램, 로봇 제어 프로그램을 각각 나누어 구현했음. 최근에는 대규모 신경망을 활용하여 이러한 기능을 하나의 모델에서 통합하려는 연구가 진행되고 있음. 사용자는 복잡한 프로그래밍 명령 대신 일상적인 언어로 로봇에게 작업을 지시할 수 있음.
+
+대표적인 VLA 연구 프로젝트
+
+ RT 시리즈
+Google DeepMind의 Robotics Transformer 시리즈. 로봇의 시각 정보와 언어 명령을 바탕으로 행동을 생성하는 연구.
+
+OpenVLA
+Stanford 대학과 여러 연구기관에서 개발한 오픈소스 VLA 모델. 연구자와 학생이 직접 다운로드하여 실험할 수 있다는 장점이 있음.
+
+ NVIDIA 로봇 파운데이션 모델
+NVIDIA가 개발하고 있는 로봇용 기반 모델. 다양한 로봇 작업과 환경에 적용하는 것을 목표로 함.
+
+VLA의 활용 분야
+
+서비스 로봇, 물류 로봇, 산업용 로봇, 가정용 로봇, 자율주행 로봇, 휴머노이드 로봇 등에 활용될 수 있음. 특히 휴머노이드 로봇은 인간과 비슷한 환경에서 다양한 작업을 수행해야 하므로 주변 환경과 사람의 지시를 함께 이해하는 VLA 기술이 중요함.
+
+ VLA의 장점
+
+자연어로 로봇에게 작업을 지시할 수 있음. 여러 기능을 하나의 모델로 통합할 수 있음. 새로운 작업과 환경에 어느 정도 대응할 수 있음. 다양한 로봇 작업에 적용할 수 있음. 프로그래밍해야 하는 동작의 양을 줄일 수 있음.
+
+VLA의 한계와 해결 과제
+
+복잡한 실제 환경
+현실에서는 물체의 위치와 주변 상황이 계속 변하기 때문에 모델이 항상 정확한 행동을 수행한다고 보장하기 어려움.
+
+ 많은 학습 데이터
+다양한 작업을 학습하려면 많은 영상, 언어, 로봇 행동 데이터가 필요함.
+
+높은 연산 비용
+대규모 모델을 학습하고 실행하기 위해 높은 컴퓨팅 성능이 필요함.
+
+안전성
+사람이 있는 공간에서 잘못된 행동을 수행하면 사고로 이어질 수 있음. 따라서 행동의 신뢰성 향상, 예외 상황 대응, 충돌 방지, 로봇 제어 안정성 향상, 사람과의 안전한 협업 등에 대한 연구가 필요함.
+
+VLA와 로봇 제어
+VLA 모델은 작업 수준의 행동을 생성하고, 실제 로봇은 이를 관절 제어 명령으로 실행함.
+
+언어 명령 -&gt; 작업 목표 생성 -&gt; 행동 또는 이동 경로 생성 -&gt; 로봇 관절 제어 -&gt; 실제 작업 수행
+</pre>
+</section>
+    </article>
+
+    <div class="post-actions">
+      <a href="../vla-introduction.html" class="btn-source">&larr; 기술 블로그 글로 돌아가기</a>
+      <a href="../index.html" class="btn-back">전체 글 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

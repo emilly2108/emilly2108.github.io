@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지를 작성할 때 참고한 원본 자료입니다.">
+  <title>원본 자료: FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="../index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container source-container">
+    <header class="post-header">
+      <span class="post-category">Original Source</span>
+      <h1 class="post-title">원본 자료: FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지</h1>
+      <p class="post-summary">기술 블로그 글을 작성할 때 참고한 원문입니다. 본문과 비교해 정리·편집된 범위를 확인할 수 있습니다.</p>
+    </header>
+
+    <article class="post-content">
+<section class="source-section">
+  <h2>FSM,HFSM.txt</h2>
+  <pre class="source-content"># FSM
+FSM은 Finite State Machine, 즉 유한 상태 머신
+시스템이 가질 수 있는 상태와 상태 전환 규칙을 정의하는 방식
+모든 상태가 같은 레벨에 있음
+
+FSM은 보통 다음 네 가지 요소로 구성
+상태(state): 어떤 동작을 하는지 또는 어떤 상황에 처해 있는지를 나타내는 표현
+전이 함수 또는 전이 규칙(transition): 어떤 상태에서 다른 상태로 변화하는 과정
+입력(input): 외부에서 인가되는 신호 또는 데이터
+출력 또는 동작(output/action): 특정 상태에서 생성되는 신호 또는 데이터
+초기 상태(initial state):
+
+전이 조건과 전이 규칙의 차이
+guard: 전이할 수 있는가?
+action: 전이할 때 무엇을 할 것인가?
+
+ FSM은 출력 생성 방식에 따라 무어(Moore) FSM과 밀리(Mealy) FSM으로 나뉜다. 밀리 FSM은 현재 상태와 입력에 의해 출력이 결정되며, 무어 FSM은 현재 상태만으로 출력이 결정
+Mealy FSM  : 현재 상태 + 입력 → 출력
+Moore FSM  : 현재 상태 → 출력
+
+Moore 방식
+닫힘 상태 → 모터 정지
+열림 상태 → 모터 정지
+여는 중 상태 → 모터 열기
+닫는 중 상태 → 모터 닫기
+
+Mealy 방식
+닫힘 상태에서 열기 버튼 입력
+→ 즉시 모터 작동
+
+다만 파이썬 프로그램에서는 Moore/Mealy를 엄격하게 나누기보다, 상태 클래스의 update(), enter(), exit()에서 동작을 실행하는 형태가 더 흔하다.
+
+현재 상태 + 이벤트 + 조건
+        ↓
+다음 상태 + 동작
+
+출력과 동작의 차이점
+출력: 모터 속도 100, LED 켜짐, "공격 중"이라는 결과
+동작: 모터를 켜는 함수, 애니메이션 재생 함수, 공격 함수 실행
+
+예시
+구성 요소
+상태: 닫힘, 열림
+이벤트: 열기, 닫기
+전이 조건: 특정 이벤트가 발생했을 때 이동
+동작: 상태에 들어가거나 나올 때 실행할 코드
+
+단점
+상태가 많아지면 전이 수가 빠르게 증가
+그로 인해 발생하는 문제들(하나의 큰 if/elif 구조로 구현했을 때 생기는 문제)
+상태 전이 코드가 한 파일에 몰림
+공통 이벤트 처리 코드가 반복됨
+상태가 많아지면 조건문이 복잡해짐
+어떤 상태에서 어떤 이벤트가 가능한지 찾기 어려움
+공통 동작을 재사용하기 어려움
+
+
+# HFSM
+https://github.com/martinomiani/hfsm
+HFSM은 Hierarchical Finite State Machine
+계층형 유한 상태 머신
+ FSM 안에 하위 FSM을 넣는 구조
+예시
+Character
+├── Peaceful
+│   ├── Idle
+│   └── Patrol
+└── Combat
+    ├── Chase
+    ├── Attack
+    └── Retreat
+
+HFSM에서는 현재 상태를 하나가 아니라 경로로 봄.
+
+이벤트 버블링
+Attack가 이벤트 처리
+→ 처리하지 못하면 Combat이 처리
+→ 그래도 못 하면 Character가 처리
+Attack만의 이벤트가 아니라 Combat 전체에 영향을 주는 이벤트로 봄
+
+HFSM에서는 이벤트를 현재 하위 상태가 먼저 처리하게 할 수도 있고, 처리하지 못한 이벤트를 부모 상태로 전달할 수도 있다. 반대로 부모 이벤트를 하위 FSM으로 전파하는 구현도 가능하다. 이벤트 전달 방향은 HFSM 구현 규칙에 따라 달라진다.
+
+_________________________________________________
+코딩 관련 추가 정리
+
+enter(): 상태에 진입할 때 한 번 실행
+update(): 해당 상태에 머무는 동안 반복 실행
+exit(): 상태에서 빠져나갈 때 한 번 실행
+
+예시
+enter()  → 공격 애니메이션 시작
+update() → 공격 진행
+exit()   → 공격 애니메이션 종료
+</pre>
+</section>
+    </article>
+
+    <div class="post-actions">
+      <a href="../fsm-hfsm-state-machines.html" class="btn-source">&larr; 기술 블로그 글로 돌아가기</a>
+      <a href="../index.html" class="btn-back">전체 글 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

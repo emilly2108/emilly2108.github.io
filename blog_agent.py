@@ -73,6 +73,10 @@ class BlogPost(BaseModel):
     hero_label: str = Field(description="카드 썸네일에 표시할 2~12자 텍스트")
     summary: str = Field(description="목록 카드에 표시할 1~2문장 요약")
     body_markdown: str = Field(description="완성된 기술 블로그 본문 Markdown")
+    source_url: str | None = Field(
+        default=None,
+        description="원본 자료 열람 페이지의 상대 URL(선택 사항)",
+    )
 
 
 ARTICLE_INSTRUCTIONS = """
@@ -98,6 +102,13 @@ def parse_args() -> argparse.Namespace:
         description="학습 자료를 기술 블로그 글로 변환하고 GitHub Pages에 추가합니다."
     )
     parser.add_argument("files", nargs="*", type=Path, help="txt, pdf, hwp, hwpx, docx 등")
+    parser.add_argument(
+        "--source-file",
+        action="append",
+        type=Path,
+        default=[],
+        help="--from-json으로 렌더링할 때 원본 열람 페이지에 포함할 텍스트 파일",
+    )
     parser.add_argument("--repo", type=Path, default=Path(__file__).parent)
     parser.add_argument("--model", default=os.getenv("BLOG_AGENT_MODEL", "gpt-5.5"))
     parser.add_argument("--title", help="모델이 만든 제목 대신 사용할 제목")
@@ -317,11 +328,17 @@ def safe_markdown(source: str) -> str:
     )
 
 
-def article_template(post: BlogPost, published_date: str) -> str:
+def article_template(
+    post: BlogPost, published_date: str, source_url: str | None = None
+) -> str:
     title = html.escape(post.title)
     tag = html.escape(post.tag)
     summary = html.escape(post.summary)
     body = safe_markdown(post.body_markdown)
+    source_action = ""
+    if source_url:
+        safe_source_url = html.escape(source_url, quote=True)
+        source_action = f'''\n      <a href="{safe_source_url}" class="btn-source">\n        <i class="far fa-file-alt"></i> 원본 자료 보기\n      </a>'''
     return f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -355,7 +372,9 @@ def article_template(post: BlogPost, published_date: str) -> str:
 {indent_html(body, 6)}
     </article>
 
-    <a href="index.html" class="btn-back">&larr; 전체 글 목록으로</a>
+    <div class="post-actions">{source_action}
+      <a href="index.html" class="btn-back">&larr; 전체 글 목록으로</a>
+    </div>
   </main>
 
   <footer>
@@ -374,6 +393,85 @@ def indent_html(value: str, spaces: int) -> str:
     return "\n".join(prefix + line if line else "" for line in value.splitlines())
 
 
+def source_page_template(post: BlogPost, source_sections: str) -> str:
+    title = html.escape(post.title)
+    return f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{title}를 작성할 때 참고한 원본 자료입니다.">
+  <title>원본 자료: {title} | {SITE_TITLE}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="../index.html">&lt;/&gt; <span>{SITE_TITLE}</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container source-container">
+    <header class="post-header">
+      <span class="post-category">Original Source</span>
+      <h1 class="post-title">원본 자료: {title}</h1>
+      <p class="post-summary">기술 블로그 글을 작성할 때 참고한 원문입니다. 본문과 비교해 정리·편집된 범위를 확인할 수 있습니다.</p>
+    </header>
+
+    <article class="post-content">
+{source_sections}
+    </article>
+
+    <div class="post-actions">
+      <a href="../{post.slug}.html" class="btn-source">&larr; 기술 블로그 글로 돌아가기</a>
+      <a href="../index.html" class="btn-back">전체 글 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; {date.today().year} {SITE_TITLE}</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({{top: 0, behavior: 'smooth'}})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>
+"""
+
+
+def write_source_page(repo: Path, post: BlogPost, source_files: Iterable[Path]) -> Path:
+    sections: list[str] = []
+    for source_file in source_files:
+        source_file = Path(source_file)
+        source_text = local_text_for(source_file)
+        if source_text is None:
+            continue
+        source_text = source_text.replace("\r\n", "\n").replace("\r", "\n")
+        source_text = "\n".join(line.rstrip() for line in source_text.split("\n"))
+        file_name = html.escape(source_file.name)
+        escaped_text = html.escape(source_text, quote=False)
+        sections.append(
+            f'''<section class="source-section">
+  <h2>{file_name}</h2>
+  <pre class="source-content">{escaped_text}</pre>
+</section>'''
+        )
+    if not sections:
+        raise ValueError("원본 자료 열람 페이지를 만들 수 있는 텍스트 파일이 없습니다.")
+
+    source_path = repo / "sources" / f"{post.slug}.html"
+    source_path.parent.mkdir(parents=True, exist_ok=True)
+    source_path.write_text(
+        source_page_template(post, "\n\n".join(sections)), encoding="utf-8"
+    )
+    return source_path
+
+
 def load_posts(path: Path) -> list[dict[str, str]]:
     if not path.exists():
         return []
@@ -384,7 +482,10 @@ def load_posts(path: Path) -> list[dict[str, str]]:
 
 
 def update_posts(
-    posts: list[dict[str, str]], post: BlogPost, published_date: str
+    posts: list[dict[str, str]],
+    post: BlogPost,
+    published_date: str,
+    source_url: str | None = None,
 ) -> list[dict[str, str]]:
     record = {
         "slug": post.slug,
@@ -395,6 +496,8 @@ def update_posts(
         "date": published_date,
         "url": f"{post.slug}.html",
     }
+    if source_url:
+        record["sourceUrl"] = source_url
     remaining = [item for item in posts if item.get("slug") != post.slug]
     remaining.append(record)
     return sorted(
@@ -405,7 +508,11 @@ def update_posts(
 
 
 def write_post(
-    repo: Path, post: BlogPost, published_date: str, overwrite: bool = False
+    repo: Path,
+    post: BlogPost,
+    published_date: str,
+    overwrite: bool = False,
+    source_url: str | None = None,
 ) -> tuple[Path, Path]:
     repo = repo.resolve()
     index_path = repo / "index.html"
@@ -426,8 +533,10 @@ def write_post(
             f"'{post.slug}' 글이 이미 있습니다. 수정하려면 --overwrite를 추가하세요."
         )
 
-    posts = update_posts(current_posts, post, published_date)
-    post_path.write_text(article_template(post, published_date), encoding="utf-8")
+    posts = update_posts(current_posts, post, published_date, source_url=source_url)
+    post_path.write_text(
+        article_template(post, published_date, source_url=source_url), encoding="utf-8"
+    )
     posts_path.write_text(
         json.dumps(posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -500,14 +609,28 @@ def main() -> int:
                 keep_uploaded_files=args.keep_uploaded_files,
             )
         post = apply_overrides(post, args)
+        source_inputs = [*args.files, *args.source_file]
+        source_files = [path for path in source_inputs if local_text_for(path) is not None]
+        source_path = None
+        source_url = post.source_url
+        if source_files:
+            source_path = write_source_page(args.repo.resolve(), post, source_files)
+            source_url = f"sources/{post.slug}.html"
         post_path, posts_path = write_post(
-            args.repo, post, published_date, overwrite=args.overwrite
+            args.repo,
+            post,
+            published_date,
+            overwrite=args.overwrite,
+            source_url=source_url,
         )
         print(f"글 생성: {post_path}")
         print(f"목록 갱신: {posts_path}")
 
         if args.publish:
-            publish(args.repo.resolve(), [post_path, posts_path], post.title)
+            generated_files = [post_path, posts_path]
+            if source_path:
+                generated_files.append(source_path)
+            publish(args.repo.resolve(), generated_files, post.title)
             print("GitHub 게시 완료")
         else:
             print("미리보기 후 게시하려면 같은 명령에 --publish를 추가하세요.")

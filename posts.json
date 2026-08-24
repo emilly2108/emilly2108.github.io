@@ -6,7 +6,8 @@
     "heroLabel": "FSM/HFSM",
     "summary": "FSM의 상태·이벤트·전이·동작 개념부터 Moore/Mealy 방식, 상태 폭발 문제, HFSM의 계층 구조와 이벤트 버블링까지 정리합니다.",
     "date": "2026-08-20",
-    "url": "fsm-hfsm-state-machines.html"
+    "url": "fsm-hfsm-state-machines.html",
+    "sourceUrl": "sources/fsm-hfsm-state-machines.html"
   },
   {
     "slug": "vla-introduction",
@@ -15,7 +16,8 @@
     "heroLabel": "VLA",
     "summary": "VLA 모델이 시각 정보와 자연어 명령을 이해해 로봇의 행동을 생성하는 원리, 학습 방식, 활용 분야와 한계를 정리합니다.",
     "date": "2026-06-25",
-    "url": "vla-introduction.html"
+    "url": "vla-introduction.html",
+    "sourceUrl": "sources/vla-introduction.html"
   },
   {
     "slug": "ros2-autonomous-navigation-slam",
@@ -24,7 +26,8 @@
     "heroLabel": "ROS 2 SLAM",
     "summary": "ROS 2 자율주행 시스템에서 SLAM이 센서 데이터로 지도와 위치를 추정하는 원리부터 2D·3D·Semantic SLAM, Nav2 연계와 현실적인 한계까지 정리합니다.",
     "date": "2026-06-25",
-    "url": "ros2-autonomous-navigation-slam.html"
+    "url": "ros2-autonomous-navigation-slam.html",
+    "sourceUrl": "sources/ros2-autonomous-navigation-slam.html"
   },
   {
     "slug": "ros2",
@@ -33,6 +36,7 @@
     "heroLabel": "ROS 2",
     "summary": "ROS 2의 역할과 ROS 1과의 차이, 노드·토픽·서비스를 중심으로 기본 통신 구조를 정리합니다.",
     "date": "2026-05-24",
-    "url": "ros2.html"
+    "url": "ros2.html",
+    "sourceUrl": "sources/ros2.html"
   }
 ]

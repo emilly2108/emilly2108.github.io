@@ -430,8 +430,25 @@ body {
 }
 
 .post-actions .btn-back,
-.post-actions .btn-github {
+.post-actions .btn-github,
+.post-actions .btn-source {
   margin-top: 0;
+}
+
+.btn-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 7px;
+  background: #0f766e;
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.btn-source:hover {
+  background: #115e59;
 }
 
 .btn-github {
@@ -459,6 +476,26 @@ body {
   color: #475569;
   font-weight: 500;
   text-decoration: none;
+}
+
+.source-section + .source-section {
+  margin-top: 36px;
+}
+
+.source-content {
+  max-height: 70vh;
+  margin: 16px 0 0;
+  padding: 22px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #f8fafc;
+  color: #334155;
+  font-family: "Cascadia Mono", "Consolas", monospace;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 footer {

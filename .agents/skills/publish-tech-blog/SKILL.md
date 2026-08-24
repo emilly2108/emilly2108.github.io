@@ -28,12 +28,14 @@ Do not apply this shortcut when `기술 블로그` appears inside a longer quest
 5. Choose a unique lowercase ASCII kebab-case slug. Check both `posts.json` and `{slug}.html` before writing.
 6. Prefer the repository renderer:
    - Create a temporary `BlogPost` JSON object with `title`, `slug`, `tag`, `hero_label`, `summary`, and `body_markdown`.
-   - Run `.venv\Scripts\python.exe blog_agent.py --from-json <json> --date YYYY-MM-DD`.
+   - Run `.venv\Scripts\python.exe blog_agent.py --from-json <json> --source-file <source.txt> --date YYYY-MM-DD` for each local text source that should remain viewable.
    - Add `--overwrite` only when the user explicitly requested replacing an existing post.
+   - When local text sources are supplied, the renderer also creates `sources/<slug>.html`, adds a `sourceUrl` field, and places an `원본 자료 보기` button at the bottom of the article. The source page must HTML-escape the original text so source content cannot execute as markup or script.
    - If the virtual environment is unavailable, edit the HTML and `posts.json` directly while preserving the existing templates.
 7. Validate before publishing:
    - parse `posts.json`;
    - confirm the new URL exists;
+   - when a source page was requested, confirm its URL exists and the article contains the `원본 자료 보기` button;
    - confirm title, date, tag, summary, headings, and code blocks render;
    - ensure no raw `<script>` from source material is executable;
    - run `git diff --check`;

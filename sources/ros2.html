@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리를 작성할 때 참고한 원본 자료입니다.">
+  <title>원본 자료: ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리 | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="../index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container source-container">
+    <header class="post-header">
+      <span class="post-category">Original Source</span>
+      <h1 class="post-title">원본 자료: ROS 2란 무엇인가? 핵심 개념과 통신 방식 정리</h1>
+      <p class="post-summary">기술 블로그 글을 작성할 때 참고한 원문입니다. 본문과 비교해 정리·편집된 범위를 확인할 수 있습니다.</p>
+    </header>
+
+    <article class="post-content">
+<section class="source-section">
+  <h2>ROS 2.txt</h2>
+  <pre class="source-content">ROS 2는 Robot Operating System 2의 약자. 모터 제어, 센서 데이터 수집, 객체 인식, 경로 계획처럼 서로 다른 로봇 기능을 여러 개의 독립적인 프로그램으로 나누고, 이들이 통신할 수 있도록 도와주는 로봇 소프트웨어 미들웨어임. 이름에 Operating System이 포함되어 있지만 Windows나 Linux처럼 컴퓨터를 직접 관리하는 운영체제는 아님.
+
+ROS 2는 로봇 기능을 작은 구성 요소로 분리하고 각 요소가 표준화된 방식으로 데이터를 주고받도록 지원하는 개발 프레임워크임. 기능을 나누어 개발하기 때문에 프로그램을 수정하거나 새로운 센서와 제어기를 추가하기 쉬움.
+
+ROS 2의 기본 구조
+로봇 기능을 노드로 분리 -&gt; 토픽, 서비스, 액션으로 노드 연결 -&gt; 센서 데이터 전달 및 명령 처리 -&gt; 로봇 제어
+
+ROS 1과 ROS 2의 차이
+ROS 1은 중앙의 ROS Master를 통해 노드들이 서로를 찾는 구조를 사용함. 구조가 비교적 단순하다는 장점이 있지만 중앙 Master에 문제가 발생하면 전체 통신에 영향을 줄 수 있음.
+
+ROS 2는 DDS(Data Distribution Service) 기반 통신을 사용함. 각 노드가 네트워크에서 서로를 발견할 수 있기 때문에 중앙 Master 없이도 분산된 시스템을 구성할 수 있음.
+
+ROS 1 -&gt; 중앙 ROS Master 중심의 통신
+ROS 2 -&gt; DDS 기반의 분산 통신
+
+ROS 2의 주요 특징
+분산 구조: 중앙 Master에 의존하지 않고 노드가 서로를 발견함. QoS 설정: 데이터의 신뢰성, 저장 방식, 전송 지연, 데이터 전달 빈도 등을 상황에 맞게 조정할 수 있음. 다양한 플랫폼 지원: Linux뿐 아니라 Windows와 macOS 환경도 고려함. 실시간 시스템 지원: 일정하고 예측 가능한 응답 시간이 중요한 로봇 제어 환경을 지원하도록 설계됨. 모듈화: 기능을 여러 노드로 나누어 독립적으로 개발하고 테스트할 수 있음.
+
+ROS 2 시스템의 기본 단위: 노드
+노드(Node)는 ROS 2 애플리케이션을 구성하는 기본 실행 단위임. 하나의 노드는 특정 역할을 담당하는 독립적인 프로그램으로 동작함.
+
+예시
+카메라 노드 -&gt; 영상 데이터 발행
+객체 인식 노드 -&gt; 영상 데이터를 받아 객체 인식
+경로 계획 노드 -&gt; 인식 결과를 바탕으로 이동 경로 생성
+모터 제어 노드 -&gt; 속도 명령을 받아 모터 구동
+
+기능을 노드 단위로 분리하면 각 부분을 독립적으로 개발하고 테스트할 수 있음. 특정 노드를 다른 구현으로 교체하거나 여러 컴퓨터에 나누어 실행하는 것도 가능함.
+
+ROS 2의 패키지와 워크스페이스
+
+패키지(Package)는 ROS 2에서 노드, 메시지, 서비스, 액션, 설정 파일, 실행 파일 등을 묶어 관리하는 단위임. 하나의 패키지 안에 특정 로봇 기능에 필요한 코드와 설정을 함께 구성할 수 있음.
+
+워크스페이스(Workspace)는 여러 ROS 2 패키지를 개발하고 빌드하는 작업 공간임. 일반적으로 패키지를 작성한 뒤 워크스페이스에서 빌드하고, 환경을 설정한 다음 노드를 실행함.
+
+워크스페이스에서 패키지 개발 -&gt; 패키지 빌드 -&gt; 환경 설정 -&gt; 노드 실행
+
+노드 간 통신 방식
+ROS 2의 노드는 토픽, 서비스, 액션을 사용하여 서로 데이터를 주고받음. 각각의 통신 방식은 데이터의 특성과 작업의 목적에 따라 사용 방법이 다름.
+
+토픽(Topic)
+토픽은 연속적으로 발생하는 데이터를 비동기 방식으로 전달할 때 사용하는 통신 방식임. 데이터를 보내는 노드를 Publisher, 데이터를 받는 노드를 Subscriber라고 함.
+
+Publisher -&gt; Topic -&gt; Subscriber
+
+카메라 영상, LiDAR 스캔, IMU 데이터, 로봇의 속도 명령처럼 계속해서 흐르는 데이터에 적합함. 하나의 Publisher가 여러 Subscriber에게 데이터를 보낼 수도 있고, 여러 Publisher가 하나의 Topic에 데이터를 발행할 수도 있음.
+
+토픽의 특징
+데이터가 계속 전달됨. 송신자와 수신자가 동시에 연결되어 있지 않아도 통신할 수 있음. 송신자는 수신자의 응답을 기다리지 않음. 센서 데이터와 상태 정보 전달에 적합함.
+
+서비스(Service)
+서비스는 요청(Request)과 응답(Response)이 한 쌍으로 이루어진 통신 방식임. 특정 시점에 작업을 요청하고 그 결과를 받고 싶을 때 사용함.
+
+Service Client -&gt; Request -&gt; Service Server -&gt; Response -&gt; Service Client
+
+예시
+현재 로봇의 상태를 알려줘 -&gt; 로봇 상태 응답
+카메라를 켜줘 -&gt; 카메라 작동 결과 응답
+맵을 저장해줘 -&gt; 저장 성공 또는 실패 응답
+
+서비스는 요청을 보낸 쪽이 응답을 기다리는 방식으로 사용할 수 있음. 따라서 계속 흐르는 데이터에는 토픽이 더 적합하고, 한 번의 요청과 결과가 필요한 작업에는 서비스가 적합함.
+
+액션(Action)
+액션은 실행 시간이 오래 걸리는 작업을 처리하기 위한 통신 방식임. 작업을 시작하고 진행 상황을 확인할 수 있으며, 필요하면 작업을 취소할 수도 있음.
+
+Action Client -&gt; Goal -&gt; Action Server -&gt; Feedback -&gt; Result
+
+예시
+로봇을 특정 위치로 이동시켜줘 -&gt; 이동 중 진행 상황 전달 -&gt; 목적지 도착 결과 전달
+
+액션의 구성 요소
+Goal: 수행할 작업의 목표
+Feedback: 작업이 진행되는 동안 전달되는 중간 상태
+Result: 작업이 완료된 뒤 전달되는 최종 결과
+Cancel: 실행 중인 작업을 취소하는 요청
+
+로봇을 목적지까지 이동시키기, 팔을 이용해 물체를 집기, 긴 시간 동안 경로를 따라 주행하기와 같이 완료까지 시간이 필요한 작업에 적합함.
+
+토픽, 서비스, 액션 비교
+
+토픽: 연속적인 데이터 전달
+서비스: 짧은 요청과 응답
+액션: 시간이 오래 걸리는 작업과 진행 상태 전달
+
+카메라 영상 -&gt; 토픽
+현재 배터리 상태 요청 -&gt; 서비스
+목적지까지 이동 -&gt; 액션
+
+ROS 2 인터페이스
+
+노드가 주고받는 데이터의 형식은 인터페이스로 정의함. 토픽은 메시지(Message), 서비스는 요청과 응답 형식, 액션은 목표와 피드백과 결과 형식으로 구성됨.
+Topic -&gt; Message
+Service -&gt; Request + Response
+Action -&gt; Goal + Feedback + Result
+예를 들어 카메라 영상은 이미지 메시지 형식으로 전달되고, 로봇의 속도 명령은 선속도와 각속도를 포함하는 메시지 형식으로 전달될 수 있음.
+
+QoS는 Quality of Service의 약자. ROS 2에서 데이터가 어떤 방식으로 전달되고 관리될지를 설정하는 기능임. 센서 데이터는 최신 데이터가 중요할 수 있고, 제어 명령은 데이터가 누락되지 않는 것이 중요할 수 있으므로 통신 목적에 따라 QoS를 다르게 설정할 수 있음.
+
+QoS에서 설정할 수 있는 항목
+Reliability: 데이터를 반드시 전달할지, 일부 손실을 허용할지 설정
+Durability: 늦게 참여한 노드가 이전 데이터를 받을 수 있는지 설정
+History: 데이터를 몇 개까지 저장할지 설정
+Depth: 저장할 데이터의 개수 설정
+Deadline: 일정 시간 안에 데이터가 전달되어야 하는지 설정
+
+센서 데이터 -&gt; 일부 데이터 손실을 허용하고 최신 데이터 중심으로 처리
+중요한 제어 명령 -&gt; 데이터 전달의 신뢰성을 높여 처리
+QoS 설정이 서로 맞지 않으면 Publisher와 Subscriber가 존재하더라도 데이터가 제대로 전달되지 않을 수 있음.
+
+ROS 2 통신 구조 예시
+카메라 노드가 영상을 발행 -&gt; 객체 인식 노드가 영상을 구독 -&gt; 객체 인식 결과를 토픽으로 발행 -&gt; 경로 계획 노드가 인식 결과를 구독 -&gt; 이동 목표를 액션으로 전달 -&gt; 모터 제어 노드가 속도 명령을 구독
+</pre>
+</section>
+    </article>
+
+    <div class="post-actions">
+      <a href="../ros2.html" class="btn-source">&larr; 기술 블로그 글로 돌아가기</a>
+      <a href="../index.html" class="btn-back">전체 글 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>
