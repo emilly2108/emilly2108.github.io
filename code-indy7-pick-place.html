@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Indy7 pick&place 프로젝트에 사용할 object detection 단계로, RealSense D435i와 OpenCV를 이용해 큐브 색상과 크기, edge 길이를 검출하는 프로젝트 소개입니다.">
+  <title>indy7을 이용한 pick&amp;place | My Tech Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav class="navbar">
+    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
+    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
+      <i class="fab fa-github"></i>
+    </a>
+  </nav>
+
+  <main class="post-container">
+    <header class="post-header">
+      <span class="post-category">Python / Robotics</span>
+      <h1 class="post-title">indy7을 이용한 pick&amp;place</h1>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.08.01–</div>
+      <p class="post-summary">Indy7 pick&amp;place 파이프라인에 사용할 object detection 단계로, RealSense D435i와 OpenCV를 이용해 큐브의 색상·크기·edge 길이를 검출하는 프로젝트입니다.</p>
+    </header>
+
+    <article class="post-content">
+      <p>이 프로젝트는 아직 Indy7 로봇을 직접 움직이는 pick&amp;place 전체 코드가 아니라, pick 대상 물체를 인식하기 위한 비전 모듈 단계입니다. 현재 코드는 카메라 화면에서 큐브 윗면을 찾고, 색상과 실제 edge 길이를 계산해 이후 로봇 좌표 변환과 grasp/pick 동작으로 연결하기 위한 입력 정보를 만드는 데 초점을 둡니다.</p>
+
+      <ul class="project-facts">
+        <li>
+          <strong>작업 시기</strong>
+          2026년 8월 1일 ~ 진행 중
+        </li>
+        <li>
+          <strong>현재 구현 범위</strong>
+          Pick&amp;place에 사용할 object detection. Indy7 제어와 그리퍼 동작 코드는 후속 단계에서 추가 예정
+        </li>
+        <li>
+          <strong>주요 기술</strong>
+          Python, OpenCV, Intel RealSense D435i, depth 기반 3D edge 측정, 색상 검출
+        </li>
+      </ul>
+
+      <figure class="project-image">
+        <img src="assets/images/indy7-pick-place-object-detection.png" alt="큐브 색상과 edge 길이를 라벨링한 객체 인식 성공 화면">
+        <figcaption>객체 인식 성공 화면. 검출된 큐브마다 색상, 기준 크기, 측정 edge 길이, RGB 중심값을 표시했습니다.</figcaption>
+      </figure>
+
+      <h2>구현 방식</h2>
+
+      <p>비전 파이프라인은 RealSense의 color/depth 프레임을 정렬한 뒤, 색상 마스크와 검은 테이프 외곽 조건을 함께 사용해 큐브 윗면 후보를 고르는 흐름입니다. 색상만으로 후보를 찾으면 조명이나 배경에 흔들릴 수 있기 때문에, 큐브 주변의 검은 테이프 edge가 실제로 사각형을 지지하는지도 함께 확인합니다.</p>
+
+      <ul>
+        <li><code>cube.py</code>를 실행 진입점으로 두고, 고정 설정과 색상 프로필을 준비합니다.</li>
+        <li><code>realsense_camera.py</code>에서 D435i의 color/depth 스트림을 640x480@30으로 열고 color 좌표계에 depth를 정렬합니다.</li>
+        <li><code>cube_colors.py</code>에서 blue, green, yellow, red의 고정 RGB/HSV 프로필을 이용해 색상 면 마스크를 만듭니다.</li>
+        <li><code>cube_detector.py</code>에서 검은 테이프 후보, 색상 채움률, edge 지지율, depth 안정성, 사각형 형태 조건을 순서대로 검사합니다.</li>
+        <li><code>cube_geometry.py</code>에서 픽셀 좌표와 depth를 3D 좌표로 복원해 edge 길이를 mm 단위로 계산합니다.</li>
+        <li><code>cube_display.py</code>에서 검출된 큐브의 사각형, 선택 edge, 색상·크기 라벨을 OpenCV 화면에 표시합니다.</li>
+      </ul>
+
+      <h2>성공 화면에서 확인한 것</h2>
+
+      <p>성공 화면에서는 빨강, 초록, 파랑, 노랑 큐브가 각각 검출되고, 20mm 또는 25mm 기준 크기와 함께 edge 길이가 표시됩니다. 이는 아직 로봇이 물체를 집는 단계는 아니지만, pick 대상 후보를 구분하고 이후 좌표 변환에 사용할 측정값을 만들 수 있다는 점에서 중요한 중간 결과입니다.</p>
+
+      <h2>후속 작업</h2>
+
+      <p>다음 단계에서는 이 검출 결과를 Indy7의 작업 좌표계로 변환하고, 선택된 물체의 중심점과 높이를 기반으로 접근 위치·집기 위치·이탈 위치를 계산해야 합니다. 실제 Indy7 제어 코드와 그리퍼 연동 코드는 아직 공개 범위에 포함하지 않았고, 후속 코드가 준비되면 이 프로젝트에 이어 붙일 예정입니다.</p>
+
+      <h2>주의할 점</h2>
+
+      <ul>
+        <li>현재 결과는 카메라 기반 object detection이며, pick&amp;place 전체 자동화 결과로 과장하지 않았습니다.</li>
+        <li>조명, 카메라 거리, 큐브 배치, 테이프 상태에 따라 색상과 edge 검출 임계값 조정이 필요할 수 있습니다.</li>
+        <li>로봇 제어와 연결하기 전에는 카메라 좌표계와 Indy7 베이스 좌표계 사이의 calibration이 필요합니다.</li>
+      </ul>
+    </article>
+
+    <div class="post-actions">
+      <a href="https://github.com/emilly2108/indy7-pick-place-object-detection" class="btn-github" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-github"></i> GitHub에서 코드 보기
+      </a>
+      <a href="index.html?view=codes#content-section" class="btn-back">&larr; 코드 목록으로</a>
+    </div>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 My Tech Blog</span>
+    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <i class="fas fa-arrow-up"></i>
+    </button>
+  </footer>
+</body>
+</html>

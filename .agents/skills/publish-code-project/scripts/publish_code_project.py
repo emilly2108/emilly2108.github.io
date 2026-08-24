@@ -56,6 +56,26 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tag", required=True)
     parser.add_argument("--hero-label", required=True)
     parser.add_argument("--description", required=True)
+    parser.add_argument(
+        "--date",
+        default=None,
+        help="Optional date label to store in codes.json.",
+    )
+    parser.add_argument(
+        "--site-url",
+        default=None,
+        help="Optional website detail page URL for codes.json.",
+    )
+    parser.add_argument(
+        "--github-url",
+        default=None,
+        help="Optional GitHub URL to store separately in codes.json.",
+    )
+    parser.add_argument(
+        "--insert-after-title",
+        default=None,
+        help="Insert the codes.json item after the item with this exact title.",
+    )
     parser.add_argument("--owner", default=OWNER)
     parser.add_argument("--gh", default="gh", help="GitHub CLI executable")
     parser.add_argument(
@@ -260,12 +280,20 @@ def update_codes(
     tag: str,
     hero_label: str,
     url: str,
+    date: str | None = None,
+    github_url: str | None = None,
+    insert_after_title: str | None = None,
 ) -> None:
     data = json.loads(codes_path.read_text(encoding="utf-8"))
     if not isinstance(data, list):
         raise ValueError("codes.json must contain a JSON array.")
     if any(item.get("url", "").rstrip("/") == url.rstrip("/") for item in data):
         raise RuntimeError("codes.json already contains this repository URL.")
+    if github_url and any(
+        item.get("githubUrl", "").rstrip("/") == github_url.rstrip("/")
+        for item in data
+    ):
+        raise RuntimeError("codes.json already contains this GitHub URL.")
     record = {
         "title": title.strip(),
         "summary": summary.strip(),
@@ -273,7 +301,23 @@ def update_codes(
         "heroLabel": hero_label.strip(),
         "url": url,
     }
-    data.insert(0, record)
+    if date:
+        record["date"] = date.strip()
+    if github_url:
+        record["githubUrl"] = github_url.strip()
+
+    insert_index = 0
+    if insert_after_title:
+        for index, item in enumerate(data):
+            if item.get("title") == insert_after_title:
+                insert_index = index + 1
+                break
+        else:
+            raise RuntimeError(
+                f"Could not find codes.json item titled '{insert_after_title}'."
+            )
+
+    data.insert(insert_index, record)
     codes_path.write_text(
         json.dumps(data, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -320,7 +364,10 @@ def main() -> int:
             summary=args.summary,
             tag=args.tag,
             hero_label=args.hero_label,
-            url=url,
+            url=args.site_url or url,
+            date=args.date,
+            github_url=args.github_url or url,
+            insert_after_title=args.insert_after_title,
         )
         publish_site(site, args.title, args.website_message)
         project_commit = git(project, "rev-parse", "--short", "HEAD").stdout.strip()
