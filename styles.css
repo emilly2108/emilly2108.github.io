@@ -59,7 +59,7 @@ body {
 }
 
 .hero-section {
-  padding: 72px 8%;
+  padding: 48px 8% 64px;
   background:
     radial-gradient(circle at 88% 14%, rgba(45, 212, 191, 0.14), transparent 28%),
     radial-gradient(circle at 12% 12%, rgba(59, 130, 246, 0.18), transparent 30%),
@@ -579,7 +579,7 @@ footer {
   }
 
   .hero-section {
-    padding: 54px 6% 60px;
+    padding: 38px 6% 52px;
   }
 
   .hero-inner {
