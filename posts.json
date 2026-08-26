@@ -1,5 +1,15 @@
 [
   {
+    "slug": "reinforcement-learning-neural-network-basics-week1",
+    "title": "강화학습을 위한 신경망 기초 1주차: MLP·순전파·손실함수·경사하강법",
+    "tag": "Machine Learning",
+    "heroLabel": "RL 01",
+    "summary": "강화학습을 이해하기 위한 MLP의 뉴런 연산부터 순전파, 손실함수, 역전파와 경사하강법의 연결까지 1주차 핵심 개념을 정리합니다.",
+    "date": "2026-08-26",
+    "url": "reinforcement-learning-neural-network-basics-week1.html",
+    "sourceUrl": "sources/reinforcement-learning-neural-network-basics-week1.html"
+  },
+  {
     "slug": "fsm-hfsm-state-machines",
     "title": "FSM과 HFSM 이해하기: 상태 전이에서 계층 구조까지",
     "tag": "Architecture",
