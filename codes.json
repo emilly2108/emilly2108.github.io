@@ -1,5 +1,12 @@
 [
   {
+    "title": "씨름 로봇 ROS2 자율주행",
+    "summary": "ROS2 기반 씨름 로봇의 D435i 비전, 컬러 센서, CANopen 모터, HFSM brain 제어 코드 모음입니다.",
+    "tag": "Python / ROS2 / Robotics",
+    "heroLabel": "씨름",
+    "url": "https://github.com/emilly2108/sumo-robot-ros2"
+  },
+  {
     "title": "go2 강화학습",
     "summary": "Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서를 부착하고, 정책 재생 중 IMU 값 출력과 실시간 그래프 확인 기능을 추가한 프로젝트입니다.",
     "tag": "Python / Robotics",
