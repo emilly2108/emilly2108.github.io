@@ -38,3 +38,7 @@ ID를 입력하기 전에는 글 하단에 설정 안내가 표시되고, 입력
 
 `robots.txt`와 `sitemap.xml`을 추가했고, 홈 화면의 글 링크는 검색엔진이 읽을 수 있는 정적 HTML로 제공합니다. GitHub Pages에 push한 뒤 Google Search Console에서 도메인을 등록하고 `https://emilly2108.github.io/sitemap.xml`을 제출하면 색인 생성을 요청할 수 있습니다.
 
+## 디자인 참고
+
+이 블로그의 디자인과 구성은 [HeekangPark/HeekangPark.github.io](https://github.com/HeekangPark/HeekangPark.github.io) 저장소를 참고했습니다.
+
