@@ -19,7 +19,8 @@ from openai import OpenAI
 from pydantic import BaseModel, Field
 
 
-SITE_TITLE = "My Tech Blog"
+SITE_TITLE = "EMILLY'S LAB"
+SITE_URL = "https://emilly2108.github.io"
 SUPPORTED_DIRECT_UPLOADS = {
     ".pdf",
     ".txt",
@@ -345,7 +346,13 @@ def article_template(
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{summary}">
+  <meta name="author" content="emilly2108">
   <title>{title} | {SITE_TITLE}</title>
+  <link rel="canonical" href="{SITE_URL}/{post.slug}.html">
+  <meta property="og:title" content="{title} | {SITE_TITLE}">
+  <meta property="og:description" content="{summary}">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="{SITE_URL}/{post.slug}.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -383,6 +390,8 @@ def article_template(
       <i class="fas fa-arrow-up"></i>
     </button>
   </footer>
+  <script src="site-config.js?v=20260829"></script>
+  <script src="site.js?v=20260829"></script>
 </body>
 </html>
 """
@@ -401,7 +410,9 @@ def source_page_template(post: BlogPost, source_sections: str) -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{title}를 작성할 때 참고한 원본 자료입니다.">
+  <meta name="robots" content="noindex,follow">
   <title>원본 자료: {title} | {SITE_TITLE}</title>
+  <link rel="canonical" href="{SITE_URL}/sources/{post.slug}.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -439,6 +450,8 @@ def source_page_template(post: BlogPost, source_sections: str) -> str:
       <i class="fas fa-arrow-up"></i>
     </button>
   </footer>
+  <script src="../site-config.js?v=20260829"></script>
+  <script src="../site.js?v=20260829"></script>
 </body>
 </html>
 """
@@ -507,13 +520,46 @@ def update_posts(
     )
 
 
+def write_sitemap(repo: Path, posts: list[dict[str, str]]) -> Path:
+    """Keep the public article URLs discoverable when a new post is generated."""
+    fixed_urls = [
+        "",
+        "tags.html",
+        "collections.html",
+        "about.html",
+        "guestbook.html",
+        "code-go2-rl.html",
+        "code-indy7-pick-place.html",
+        "code-llm-festival-kuji-game.html",
+        "code-pendulum.html",
+        "code-berkeley-humanoid.html",
+        "code-horror-game.html",
+    ]
+    article_urls = [f"{item.get('slug', '').strip()}.html" for item in posts if item.get("slug")]
+    urls = sorted(set(fixed_urls + article_urls))
+    today = date.today().isoformat()
+    entries = "\n".join(
+        f"  <url><loc>{html.escape(SITE_URL + ('/' + path if path else '/'))}</loc><lastmod>{today}</lastmod></url>"
+        for path in urls
+    )
+    sitemap_path = repo / "sitemap.xml"
+    sitemap_path.write_text(
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{entries}\n"
+        "</urlset>\n",
+        encoding="utf-8",
+    )
+    return sitemap_path
+
+
 def write_post(
     repo: Path,
     post: BlogPost,
     published_date: str,
     overwrite: bool = False,
     source_url: str | None = None,
-) -> tuple[Path, Path]:
+) -> tuple[Path, Path, Path]:
     repo = repo.resolve()
     index_path = repo / "index.html"
     posts_path = repo / "posts.json"
@@ -540,7 +586,8 @@ def write_post(
     posts_path.write_text(
         json.dumps(posts, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    return post_path, posts_path
+    sitemap_path = write_sitemap(repo, posts)
+    return post_path, posts_path, sitemap_path
 
 
 def git(repo: Path, *args: str, capture: bool = True) -> subprocess.CompletedProcess[str]:
@@ -616,7 +663,7 @@ def main() -> int:
         if source_files:
             source_path = write_source_page(args.repo.resolve(), post, source_files)
             source_url = f"sources/{post.slug}.html"
-        post_path, posts_path = write_post(
+        post_path, posts_path, sitemap_path = write_post(
             args.repo,
             post,
             published_date,
@@ -625,9 +672,10 @@ def main() -> int:
         )
         print(f"글 생성: {post_path}")
         print(f"목록 갱신: {posts_path}")
+        print(f"사이트맵 갱신: {sitemap_path}")
 
         if args.publish:
-            generated_files = [post_path, posts_path]
+            generated_files = [post_path, posts_path, sitemap_path]
             if source_path:
                 generated_files.append(source_path)
             publish(args.repo.resolve(), generated_files, post.title)

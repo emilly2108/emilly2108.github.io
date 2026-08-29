@@ -3,159 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="개발과 학습 내용을 기록하는 기술 블로그">
-  <title>My Tech Blog</title>
+  <meta name="description" content="Emilly의 로보틱스, 강화학습, ROS 2 개발 기록과 프로젝트를 모아 둔 기술 블로그입니다.">
+  <meta name="author" content="emilly2108">
+  <title>EMILLY'S LAB · Robotics &amp; Reinforcement Learning</title>
+  <link rel="canonical" href="https://emilly2108.github.io/">
+  <meta property="og:title" content="EMILLY'S LAB · Robotics &amp; Reinforcement Learning">
+  <meta property="og:description" content="로보틱스와 강화학습을 배우며 만든 기록과 프로젝트를 정리합니다.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://emilly2108.github.io/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <nav class="navbar">
-    <a class="nav-logo" href="index.html">&lt;/&gt; <span>My Tech Blog</span></a>
-    <a class="github-link" href="https://github.com/emilly2108/emilly2108.github.io" aria-label="GitHub 저장소">
-      <i class="fab fa-github"></i>
-    </a>
-  </nav>
-
-  <header class="hero-section">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <div class="hero-kicker">안녕하세요 👋</div>
-        <h1>개발과 학습을<br>기록하는 공간</h1>
-        <p class="hero-lead">새로운 기술을 배우고 프로젝트를 만들며 얻은 경험을, 다시 찾아보기 좋은 글로 정리합니다.</p>
-        <div class="hero-btn-group">
-          <a class="hero-btn" href="#content-section" onclick="renderPosts()">최근 글 살펴보기</a>
-          <a class="hero-btn code-btn" href="#content-section" onclick="renderCodes()">코드들 살펴보기</a>
+  <main class="home-container">
+    <section class="home-hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">EMILLY'S LAB · OPEN NOTES</p>
+        <h1>배우고, 만들고,<br><span>다시 이해하는</span> 기록</h1>
+        <p class="hero-lead">로봇이 움직이는 원리와 강화학습 실험, 프로젝트에서 부딪힌 문제를 나중의 나와 다른 개발자들이 다시 읽기 좋은 형태로 정리합니다.</p>
+        <div class="hero-actions">
+          <a class="primary-button" href="#posts">최근 글 보기 ↓</a>
+          <a class="secondary-button" href="#projects">프로젝트 둘러보기</a>
         </div>
       </div>
-
-      <div class="hero-guide">
-        <div class="guide-heading">
-          <span class="guide-kicker">이 사이트를 보는 방법</span>
-          <h2>기록은 직접, 정리는 함께</h2>
+      <div class="hero-stats" aria-label="블로그 통계">
+        <p class="stats-kicker">현재 쌓아가는 것들</p>
+        <div class="stats-grid">
+          <div><strong data-post-count>5</strong><span>notes</span></div>
+          <div><strong data-project-count>7</strong><span>projects</span></div>
+          <div><strong>∞</strong><span>questions</span></div>
         </div>
+        <div class="site-hits" data-site-hits aria-label="사이트 조회수"></div>
+      </div>
+    </section>
 
-        <div class="guide-item">
-          <span class="guide-number">01</span>
-          <div>
-            <h3>기술 블로그</h3>
-            <p>제가 직접 정리한 글을 LLM을 활용해 읽기 좋은 블로그 형식으로 다듬은 것입니다. 글 맨 아래의 <strong>원본 글 보기</strong>를 누르면 제가 직접 작성한 TXT 파일 원문을 확인할 수 있습니다.</p>
-          </div>
+    <section id="posts" aria-labelledby="posts-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">KNOWLEDGE BASE</p>
+          <h2 id="posts-heading">최근 글</h2>
+          <p>개념을 이해하고 실험으로 확인한 기술 노트입니다.</p>
         </div>
+        <span class="filter-summary" data-filter-result>5개 항목 표시 중</span>
+      </div>
 
-        <div class="guide-item">
-          <span class="guide-number">02</span>
-          <div>
-            <h3>코드 글</h3>
-            <p>GitHub 저장소와 연결되어 있습니다. 글 맨 아래의 <strong>코드 보러 가기</strong>를 누르면 해당 프로젝트의 GitHub 저장소로 이동합니다.</p>
-          </div>
-        </div>
+      <div class="tag-strip" aria-label="글 태그 필터">
+        <button class="filter-chip is-selected" type="button" data-filter-tag="">전체</button>
+        <button class="filter-chip" type="button" data-filter-tag="reinforcement-learning">#reinforcement-learning</button>
+        <button class="filter-chip" type="button" data-filter-tag="robotics">#robotics</button>
+        <button class="filter-chip" type="button" data-filter-tag="ros2">#ros2</button>
+        <button class="filter-chip" type="button" data-filter-tag="machine-learning">#machine-learning</button>
+        <button class="filter-chip" type="button" data-filter-tag="architecture">#architecture</button>
+      </div>
 
-        <div class="guide-item">
-          <span class="guide-number">03</span>
-          <div>
-            <h3>LLM 관리</h3>
-            <p>모든 글과 코드를 LLM이 작성한다는 의미가 아닙니다. 제가 작성한 글과 코드의 commit·push 등 게시 과정을 별도로 작성한 LLM 에이전트가 관리한다는 뜻입니다.</p>
+      <div class="card-grid" id="post-list">
+        <a class="content-card" data-kind="post" data-slug="reinforcement-learning-neural-network-basics-week1" data-tags="machine learning reinforcement-learning neural-networks" href="reinforcement-learning-neural-network-basics-week1.html">
+          <div class="card-visual post-visual">RL 01</div>
+          <div class="card-body">
+            <div class="card-meta">NOTE · 2026.08.26</div>
+            <h3>강화학습을 위한 신경망 기초 1주차</h3>
+            <p>MLP, 순전파, 손실함수, 역전파와 경사하강법의 연결을 한 흐름으로 정리합니다.</p>
+            <div class="card-tags"><span class="tag-chip">#reinforcement-learning</span><span class="tag-chip">#neural-networks</span></div>
           </div>
+        </a>
+        <a class="content-card" data-kind="post" data-slug="fsm-hfsm-state-machines" data-tags="architecture fsm hfsm state-machine" href="fsm-hfsm-state-machines.html">
+          <div class="card-visual post-visual">FSM / HFSM</div>
+          <div class="card-body">
+            <div class="card-meta">NOTE · 2026.08.20</div>
+            <h3>FSM과 HFSM 이해하기</h3>
+            <p>상태·이벤트·전이에서 계층 구조와 이벤트 버블링까지 상태 머신을 정리합니다.</p>
+            <div class="card-tags"><span class="tag-chip">#architecture</span><span class="tag-chip">#fsm</span></div>
+          </div>
+        </a>
+        <a class="content-card" data-kind="post" data-slug="vla-introduction" data-tags="robot-ai vla machine-learning robotics" href="vla-introduction.html">
+          <div class="card-visual post-visual">VLA</div>
+          <div class="card-body">
+            <div class="card-meta">NOTE · 2026.06.25</div>
+            <h3>VLA란 무엇인가?</h3>
+            <p>시각·언어·행동을 연결해 로봇의 행동을 생성하는 VLA의 원리와 한계를 살펴봅니다.</p>
+            <div class="card-tags"><span class="tag-chip">#robot-ai</span><span class="tag-chip">#vla</span></div>
+          </div>
+        </a>
+        <a class="content-card" data-kind="post" data-slug="ros2-autonomous-navigation-slam" data-tags="ros2 slam robotics navigation" href="ros2-autonomous-navigation-slam.html">
+          <div class="card-visual post-visual">ROS 2<br>SLAM</div>
+          <div class="card-body">
+            <div class="card-meta">NOTE · 2026.06.25</div>
+            <h3>ROS 2 기반 자율주행과 SLAM</h3>
+            <p>센서 데이터로 지도와 위치를 추정하는 SLAM부터 Nav2 연계까지 살펴봅니다.</p>
+            <div class="card-tags"><span class="tag-chip">#ros2</span><span class="tag-chip">#slam</span></div>
+          </div>
+        </a>
+        <a class="content-card" data-kind="post" data-slug="ros2" data-tags="ros2 robotics middleware" href="ros2.html">
+          <div class="card-visual post-visual">ROS 2</div>
+          <div class="card-body">
+            <div class="card-meta">NOTE · 2026.05.24</div>
+            <h3>ROS 2란 무엇인가?</h3>
+            <p>노드·토픽·서비스를 중심으로 ROS 2의 기본 구조와 통신 방식을 정리합니다.</p>
+            <div class="card-tags"><span class="tag-chip">#ros2</span><span class="tag-chip">#robotics</span></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="project-section" id="projects" aria-labelledby="projects-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">BUILD LOG</p>
+          <h2 id="projects-heading">프로젝트</h2>
+          <p>코드와 실험 결과를 함께 남긴 작업들입니다.</p>
         </div>
       </div>
-    </div>
-  </header>
-
-  <main class="content-container" id="content-section">
-    <div class="section-title">
-      <h2 id="section-heading">최근 글</h2>
-      <span id="content-count" class="post-count"></span>
-    </div>
-    <div class="post-list" id="content-list" aria-live="polite">
-      <p class="loading-message">목록을 불러오는 중입니다.</p>
-    </div>
+      <div class="card-grid" id="project-list">
+        <a class="content-card" data-kind="project" data-slug="sumo-robot-ros2" data-tags="python ros2 robotics vision" href="https://github.com/emilly2108/sumo-robot-ros2" target="_blank" rel="noopener noreferrer">
+          <div class="card-visual project-visual">SUMO<br>ROBOT</div>
+          <div class="card-body"><div class="card-meta">PROJECT · GITHUB</div><h3>씨름 로봇 ROS2 자율주행</h3><p>D435i 비전, 컬러 센서, CANopen 모터, HFSM brain 제어 코드를 모았습니다.</p><div class="card-tags"><span class="tag-chip">#ros2</span><span class="tag-chip">#robotics</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-go2-rl" data-tags="python robotics isaac-lab reinforcement-learning" href="code-go2-rl.html">
+          <div class="card-visual project-visual">GO2<br>IMU</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2026.08</div><h3>go2 강화학습</h3><p>Isaac Lab Go2 환경에 IMU 관측·보상과 실시간 그래프 기능을 추가했습니다.</p><div class="card-tags"><span class="tag-chip">#isaac-lab</span><span class="tag-chip">#rl</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-indy7-pick-place" data-tags="python robotics computer-vision opencv" href="code-indy7-pick-place.html">
+          <div class="card-visual project-visual">INDY7<br>VISION</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2026.08</div><h3>indy7 pick&amp;place</h3><p>RealSense D435i와 OpenCV로 큐브 색상·크기·edge 길이를 검출합니다.</p><div class="card-tags"><span class="tag-chip">#computer-vision</span><span class="tag-chip">#opencv</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-llm-festival-kuji-game" data-tags="unity csharp llm game-development" href="code-llm-festival-kuji-game.html">
+          <div class="card-visual project-visual">KUJI<br>GAME</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2026.04</div><h3>LLM 학교 축제 쿠지 게임</h3><p>Unity UI와 C#으로 카드 선택, 보상 셔플, 드래그 공개 연출을 구현했습니다.</p><div class="card-tags"><span class="tag-chip">#unity</span><span class="tag-chip">#csharp</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-pendulum" data-tags="robotics reinforcement-learning control" href="code-pendulum.html">
+          <div class="card-visual project-visual">PENDULUM</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2026.06</div><h3>도립진자 강화학습 제어</h3><p>관측·정책 추론·모터 명령 출력 흐름을 설계한 실제 로봇 제어 프로젝트입니다.</p><div class="card-tags"><span class="tag-chip">#control</span><span class="tag-chip">#robotics</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-berkeley-humanoid" data-tags="python robotics isaac-lab locomotion" href="code-berkeley-humanoid.html">
+          <div class="card-visual project-visual">HUMANOID</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2026.01</div><h3>Berkeley Humanoid Lite Isaac Lab</h3><p>보상 함수와 명령 커리큘럼을 조정해 이족 모델의 전진 보행을 실험했습니다.</p><div class="card-tags"><span class="tag-chip">#isaac-lab</span><span class="tag-chip">#locomotion</span></div></div>
+        </a>
+        <a class="content-card" data-kind="project" data-slug="code-horror-game" data-tags="unity csharp game-development" href="code-horror-game.html">
+          <div class="card-visual project-visual">HORROR<br>GAME</div>
+          <div class="card-body"><div class="card-meta">PROJECT · 2025.07</div><h3>유니티 공포게임 협업 작품</h3><p>Raycast 상호작용, 퍼즐 흐름, 아이템 데이터와 애니메이션 로직을 구현했습니다.</p><div class="card-tags"><span class="tag-chip">#unity</span><span class="tag-chip">#game-development</span></div></div>
+        </a>
+      </div>
+    </section>
   </main>
 
-  <footer>
-    <span>&copy; 2026 My Tech Blog</span>
-    <button class="scroll-top" type="button" aria-label="맨 위로" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-      <i class="fas fa-arrow-up"></i>
-    </button>
-  </footer>
-
-  <script>
-    const escapeHtml = (value) => {
-      const node = document.createElement("div");
-      node.textContent = String(value ?? "");
-      return node.innerHTML;
-    };
-
-    const formatDate = (value) => String(value ?? "").replaceAll("-", ".");
-
-    // 공통 렌더링 함수
-    async function fetchDataAndRender(url, isCode = false) {
-      const list = document.getElementById("content-list");
-      const count = document.getElementById("content-count");
-      const heading = document.getElementById("section-heading");
-
-      heading.textContent = isCode ? "코드 목록" : "최근 글";
-      list.innerHTML = '<p class="loading-message">목록을 불러오는 중입니다.</p>';
-
-      try {
-        const response = await fetch(url, { cache: "no-store" });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const items = await response.json();
-
-        count.textContent = `${items.length}개의 항목`;
-        if (!items.length) {
-          list.innerHTML = `<p class="empty-message">아직 등록된 ${isCode ? '코드' : '글'}가 없습니다.</p>`;
-          return;
-        }
-
-        list.innerHTML = items.map((item) => `
-          <a href="${escapeHtml(item.url)}" class="post-card-link">
-            <article class="post-card">
-              <div class="post-img-box">${escapeHtml(item.heroLabel ?? (isCode ? "💻" : "📝"))}</div>
-              <div class="post-info">
-                <div class="post-meta-row">
-                  <span class="post-tag">${escapeHtml(item.tag)}</span>
-                  <span class="post-date">
-                    <i class="${isCode ? 'fab fa-github' : 'far fa-calendar'}"></i> 
-                    ${isCode ? escapeHtml(item.date ?? 'GitHub') : formatDate(item.date)}
-                  </span>
-                </div>
-                <h3 class="post-card-title">${escapeHtml(item.title)}</h3>
-                <p class="post-desc">${escapeHtml(item.summary)}</p>
-              </div>
-            </article>
-          </a>
-        `).join("");
-      } catch (error) {
-        list.innerHTML = `
-          <p class="error-message">
-            목록을 불러오지 못했습니다. 로컬에서는 <code>python -m http.server</code>로 확인해 주세요.
-          </p>
-        `;
-        console.error(error);
-      }
-    }
-
-    // 최근 글 보기 함수
-    function renderPosts() {
-      fetchDataAndRender("posts.json", false);
-    }
-
-    // 코드들 보기 함수
-    function renderCodes() {
-      fetchDataAndRender("codes.json", true);
-    }
-
-    // 첫 페이지 로드 시에는 최근 글을 기본으로 보여주고,
-    // 코드 상세 페이지에서 돌아올 때는 코드 목록을 바로 보여줍니다.
-    const initialParams = new URLSearchParams(window.location.search);
-    if (initialParams.get("view") === "codes") {
-      renderCodes();
-    } else {
-      renderPosts();
-    }
-  </script>
+  <script src="site-config.js?v=20260829"></script>
+  <script src="site.js?v=20260829"></script>
 </body>
 </html>
