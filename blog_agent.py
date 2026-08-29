@@ -19,7 +19,7 @@ from openai import OpenAI
 from pydantic import BaseModel, Field
 
 
-SITE_TITLE = "EMILLY'S LAB"
+SITE_TITLE = "LUNA'S LAB"
 SITE_URL = "https://emilly2108.github.io"
 SUPPORTED_DIRECT_UPLOADS = {
     ".pdf",

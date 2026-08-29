@@ -5,8 +5,8 @@
  * 설정 방법은 README.md의 "댓글 기능 설정"을 참고하세요.
  */
 window.BLOG_CONFIG = {
-  title: "EMILLY'S LAB",
-  shortTitle: "EMILLY'S",
+  title: "LUNA'S LAB",
+  shortTitle: "LUNA'S",
   subtitle: "Robotics · Reinforcement Learning · Notes",
   owner: "emilly2108",
   repo: "emilly2108/emilly2108.github.io",

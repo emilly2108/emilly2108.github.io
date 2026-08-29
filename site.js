@@ -89,7 +89,7 @@
     sidebar.innerHTML = `
       <a class="brand" href="${homeUrl}" aria-label="홈으로 이동">
         <span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span>
-        <span class="brand-copy"><strong>${config.shortTitle || "EMILLY'S"}</strong><b>LAB</b></span>
+        <span class="brand-copy"><strong>${config.shortTitle || "LUNA'S"}</strong><b>LAB</b></span>
       </a>
       <p class="brand-caption">${config.subtitle || "Robotics · RL · Notes"}</p>
       <nav class="side-nav" aria-label="주 메뉴">
@@ -123,13 +123,13 @@
     topbar.className = "mobile-topbar";
     topbar.innerHTML = `
       <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">☰</button>
-      <a href="${homeUrl}" class="mobile-brand">${config.title || "EMILLY'S LAB"}</a>
+      <a href="${homeUrl}" class="mobile-brand">${config.title || "LUNA'S LAB"}</a>
       <button class="mobile-theme" type="button" data-theme-toggle aria-label="테마 전환">◐</button>
     `;
 
     const footer = document.createElement("footer");
     footer.className = "site-footer";
-    footer.innerHTML = `<span>© ${new Date().getFullYear()} ${config.title || "EMILLY'S LAB"}</span><span>Built with curiosity · Open notes</span>`;
+      footer.innerHTML = `<span>© ${new Date().getFullYear()} ${config.title || "LUNA'S LAB"}</span><span>Built with curiosity · Open notes</span>`;
 
     const scrim = document.createElement("div");
     scrim.className = "sidebar-scrim";
