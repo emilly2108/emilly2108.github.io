@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서와 실시간 그래프 설정을 추가한 프로젝트 소개입니다.">
+  <meta name="description" content="Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서와 에피소드별 FFT 그래프 저장 기능을 추가하고 첫 보행 흔들림을 분석한 프로젝트입니다.">
   <title>go2 강화학습 | LUNA'S LAB</title>
   <link rel="canonical" href="https://emilly2108.github.io/code-go2-rl.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,21 +24,21 @@
     <header class="post-header">
       <span class="post-category">Python / Robotics</span>
       <h1 class="post-title">go2 강화학습</h1>
-      <div class="post-meta"><i class="fab fa-github"></i> 2026.08</div>
-      <p class="post-summary">Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서를 부착하고, 정책 재생 중 IMU 값 출력과 실시간 그래프 확인 기능을 추가한 프로젝트입니다.</p>
+      <div class="post-meta"><i class="fab fa-github"></i> 2026.08–2026.09</div>
+      <p class="post-summary">Isaac Lab 기반 Unitree Go2 강화학습 환경에 IMU 센서를 부착하고, 정책 재생 중 수집한 IMU 값을 에피소드별 FFT 그래프로 저장해 보행 흔들림의 주파수 성분을 확인한 프로젝트입니다.</p>
     </header>
 
     <article class="post-content">
-      <p>이 프로젝트는 Unitree Go2 로봇의 locomotion 강화학습 환경을 Isaac Lab에서 구성한 코드입니다. 기존 Go2 환경에 IMU 센서를 추가하고, 정책이 학습·재생되는 동안 로봇의 흔들림과 기울어짐을 더 직접적으로 확인할 수 있도록 관측값, 보상항, 그래프 출력 흐름을 정리했습니다.</p>
+      <p>이 프로젝트는 Unitree Go2 로봇의 locomotion 강화학습 환경을 Isaac Lab에서 구성한 코드입니다. 기존 Go2 환경에 IMU 센서를 추가하고, 정책이 학습·재생되는 동안 로봇의 흔들림과 기울어짐을 더 직접적으로 확인할 수 있도록 관측값, 보상항, 에피소드별 FFT 그래프 저장 흐름을 정리했습니다.</p>
 
       <ul class="project-facts">
         <li>
           <strong>작업 시기</strong>
-          2026년 8월
+          2026년 8월 ~ 9월
         </li>
         <li>
           <strong>내 작업 파트</strong>
-          Go2 IMU 센서 부착, IMU 기반 관측·보상 설정, 정책 재생 중 IMU 출력과 live plot 기능 구성
+          Go2 IMU 센서 부착, IMU 기반 관측·보상 설정, 정책 재생 중 IMU 수집과 에피소드별 FFT 그래프 저장 기능 구성
         </li>
         <li>
           <strong>주요 기술</strong>
@@ -53,12 +53,34 @@
         <li>정책 관측 순서를 gyro, projected gravity, linear acceleration, command, joint state, previous action 순서로 정리해 실제 Go2 policy runner와 맞추도록 구성했습니다.</li>
         <li><code>imu_ang_vel_xy_l2</code>, <code>imu_orientation_l2</code>, <code>imu_lin_acc_l2</code> 보상항으로 roll/pitch 흔들림과 과도한 가속을 penalty로 반영했습니다.</li>
         <li>flat/rough 환경을 나누고, play 전용 설정에서는 환경 수와 randomization을 줄여 정책 확인이 쉽도록 구성했습니다.</li>
-        <li><code>scripts/rsl_rl/play.py</code>에 <code>--print_imu</code>, <code>--plot_imu</code> 옵션을 추가해 IMU 값을 콘솔과 실시간 그래프로 확인할 수 있게 했습니다.</li>
+        <li><code>scripts/rsl_rl/play.py</code>의 <code>ImuEpisodeFftPlotter</code>가 첫 번째 환경의 각속도와 선형가속도를 제어 시점마다 모으고, 에피소드가 끝날 때 6패널 FFT PNG를 자동 저장하도록 구성했습니다.</li>
       </ul>
 
-      <h2>그래프 설정</h2>
+      <h2>FFT 그래프와 1차 흔들림 검증</h2>
 
-      <p>정책 재생 시 <code>ImuLivePlotter</code>가 2x2 그래프를 띄워 gyroscope, accelerometer, projected gravity, 흔들림 지표를 함께 보여줍니다. 이를 통해 정책이 앞으로 이동하는지만 보는 것이 아니라, 몸체가 얼마나 흔들리는지와 기울어짐이 누적되는지를 확인할 수 있습니다.</p>
+      <figure class="project-image">
+        <img src="assets/images/go2-imu-fft-episode-0001.png" alt="Unitree Go2 첫 번째 에피소드의 roll, pitch, yaw 각속도와 X, Y, Z 선형가속도 FFT 그래프">
+        <figcaption>첫 번째 에피소드의 IMU FFT 결과입니다. 위쪽은 roll·pitch·yaw 각속도, 아래쪽은 X·Y·Z 선형가속도이며 0~10Hz 구간을 표시했습니다.</figcaption>
+      </figure>
+
+      <p>가장 일관된 피크는 약 <strong>4.1Hz</strong>에서 나타났습니다. 이 주파수에서 pitch rate는 약 <code>0.042rad/s</code>, 선형가속도 X·Y·Z는 각각 약 <code>0.35</code>, <code>0.50</code>, <code>0.53m/s²</code>까지 올라갑니다. 회전과 세 방향 가속도가 같은 주파수에서 함께 커지므로, 센서 한 축의 잡음보다는 보행 중 몸체 전체가 반복적으로 반응한 성분으로 볼 수 있습니다.</p>
+
+      <p>약 <code>2.1Hz</code>, <code>4.1Hz</code>, <code>6.2Hz</code>, <code>8.3Hz</code>에 피크가 반복되는 점은 기본 보행 또는 발 접촉 리듬과 배음의 영향일 가능성을 보여 줍니다. 다만 이번 기록에는 발 접촉 시각과 관절 위상이 함께 저장되지 않았기 때문에 각 피크가 한 걸음, 대각선 발쌍의 교대, 지면 충격 중 무엇과 대응하는지는 아직 확정할 수 없습니다.</p>
+
+      <ul>
+        <li><strong>앞뒤 흔들림:</strong> pitch rate가 4.1Hz에서 가장 커 발을 디딜 때 몸체가 반복적으로 끄덕이는 움직임이 나타난 것으로 보입니다.</li>
+        <li><strong>좌우 흔들림:</strong> Y축 가속도 피크가 X축보다 커 횡방향 휘청임을 우선 점검할 필요가 있습니다.</li>
+        <li><strong>상하 바운스:</strong> Z축 가속도가 약 0.53m/s²로 여섯 축 중 가장 큰 반복 성분을 보입니다.</li>
+        <li><strong>방향 변화:</strong> yaw rate는 0Hz에 가까운 저주파 성분이 약 0.046rad/s로 커 빠른 떨림보다 느린 방향 변화나 편향 가능성을 먼저 확인해야 합니다.</li>
+      </ul>
+
+      <p><strong>1차 판정은 “주기적인 휘청임은 뚜렷하지만 폭주형 진동의 증거는 없다”입니다.</strong> 4.1Hz에 집중된 반복 진동은 보이지만, 0~10Hz 전 구간에 넓게 퍼지는 고주파 에너지나 연속적으로 커지는 피크는 관찰되지 않았습니다. 따라서 이 한 장만 놓고 보면 제어가 발산하는 형태보다는 일정한 보행 리듬에 묶인 전후·좌우 흔들림과 상하 바운스에 가깝습니다.</p>
+
+      <h3>현재 분석의 한계</h3>
+
+      <p>현재 구현은 각 축의 평균을 뺀 뒤 <code>abs(rfft) / N</code>을 그리며, 창 함수와 실수 신호의 한쪽 스펙트럼 보정을 적용하지 않습니다. 그래프의 FFT 크기를 실제 자세각이나 몸체 변위의 최대값으로 바로 환산할 수 없는 이유입니다. 또한 한 환경의 첫 번째 에피소드만 본 결과라서 정책의 안정성이나 낙상 가능성을 확정하지 않았습니다.</p>
+
+      <p>다음 검증에서는 여러 에피소드의 roll·pitch 자세각 peak-to-peak와 RMS, 중력을 제거한 가속도 RMS, 명령 속도 추종 오차, 네 발의 접촉 시각을 함께 저장할 예정입니다. 이 값이 모이면 주기적인 보행 동작과 자세를 잃는 휘청임을 분리해 비교할 수 있습니다.</p>
 
       <h2>공개 저장소 정리</h2>
 
